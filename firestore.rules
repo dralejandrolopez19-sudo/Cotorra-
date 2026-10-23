@@ -1,0 +1,189 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidCefrLevel(level) {
+      return level is string && level in ['A1', 'A2', 'B1', 'B2', 'C1'];
+    }
+
+    function isValidLanguageId(lang) {
+      return lang is string && lang in ['en', 'fr', 'de', 'it', 'ru', 'zh', 'ja', 'ko', 'pt', 'ht'];
+    }
+
+    function isValidUserProfile(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+             (!('email' in data) || data.email == null || (data.email is string && data.email.size() <= 200)) &&
+             (!('avatarId' in data) || data.avatarId == null || (data.avatarId is string && data.avatarId.size() <= 64)) &&
+             isValidLanguageId(data.activeLanguageId) &&
+             isValidCefrLevel(data.activeLevel) &&
+             data.dailyGoalMinutes is int && data.dailyGoalMinutes >= 5 && data.dailyGoalMinutes <= 180 &&
+             (!('learningGoal' in data) || data.learningGoal == null || (data.learningGoal is string && data.learningGoal.size() <= 64)) &&
+             data.coins is int && data.coins >= 0 && data.coins <= 1000000 &&
+             data.lives is int && data.lives >= 0 && data.lives <= 50 &&
+             data.currentStreak is int && data.currentStreak >= 0 && data.currentStreak <= 10000 &&
+             (!('bestStreak' in data) || (data.bestStreak is int && data.bestStreak >= 0 && data.bestStreak <= 10000)) &&
+             (!('totalStudyMinutes' in data) || (data.totalStudyMinutes is int && data.totalStudyMinutes >= 0 && data.totalStudyMinutes <= 1000000)) &&
+             (!('completedLessonsCount' in data) || (data.completedLessonsCount is int && data.completedLessonsCount >= 0 && data.completedLessonsCount <= 50000)) &&
+             (!('wordsLearnedCount' in data) || (data.wordsLearnedCount is int && data.wordsLearnedCount >= 0 && data.wordsLearnedCount <= 200000)) &&
+             (!('isDarkTheme' in data) || data.isDarkTheme is bool) &&
+             (!('stateJson' in data) || data.stateJson == null || (data.stateJson is string && data.stateJson.size() <= 200000)) &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidLanguageProgress(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             isValidLanguageId(data.languageId) &&
+             isValidCefrLevel(data.currentLevel) &&
+             data.completedLessonsCount is int && data.completedLessonsCount >= 0 && data.completedLessonsCount <= 10000 &&
+             data.studyMinutes is int && data.studyMinutes >= 0 && data.studyMinutes <= 500000 &&
+             data.listeningScore is int && data.listeningScore >= 0 && data.listeningScore <= 100 &&
+             data.readingScore is int && data.readingScore >= 0 && data.readingScore <= 100 &&
+             data.speakingScore is int && data.speakingScore >= 0 && data.speakingScore <= 100 &&
+             data.writingScore is int && data.writingScore >= 0 && data.writingScore <= 100 &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidVocabularyCard(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             isValidLanguageId(data.languageId) &&
+             data.word is string && data.word.size() >= 1 && data.word.size() <= 200 &&
+             data.translation is string && data.translation.size() >= 1 && data.translation.size() <= 200 &&
+             (!('contextSentence' in data) || data.contextSentence == null || (data.contextSentence is string && data.contextSentence.size() <= 500)) &&
+             data.intervalDays is int && data.intervalDays >= 0 && data.intervalDays <= 3650 &&
+             data.mistakeCount is int && data.mistakeCount >= 0 && data.mistakeCount <= 10000 &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().keys().hasAll([
+                         'userId', 'displayName', 'activeLanguageId', 'activeLevel',
+                         'dailyGoalMinutes', 'coins', 'lives', 'currentStreak',
+                         'createdAt', 'updatedAt'
+                       ]) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'displayName', 'email', 'avatarId', 'activeLanguageId',
+                         'activeLevel', 'dailyGoalMinutes', 'learningGoal', 'coins', 'lives',
+                         'currentStreak', 'bestStreak', 'totalStudyMinutes',
+                         'completedLessonsCount', 'wordsLearnedCount', 'isDarkTheme',
+                         'stateJson', 'createdAt', 'updatedAt'
+                       ]);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly([
+                         'displayName', 'email', 'avatarId', 'activeLanguageId',
+                         'activeLevel', 'dailyGoalMinutes', 'learningGoal', 'coins', 'lives',
+                         'currentStreak', 'bestStreak', 'totalStudyMinutes',
+                         'completedLessonsCount', 'wordsLearnedCount', 'isDarkTheme',
+                         'stateJson', 'updatedAt'
+                       ]);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      match /progress/{progressId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(progressId);
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(progressId) &&
+                         isValidLanguageProgress(incoming()) &&
+                         incoming().keys().hasAll([
+                           'userId', 'languageId', 'currentLevel', 'completedLessonsCount',
+                           'studyMinutes', 'listeningScore', 'readingScore', 'speakingScore',
+                           'writingScore', 'createdAt', 'updatedAt'
+                         ]) &&
+                         incoming().keys().hasOnly([
+                           'userId', 'languageId', 'currentLevel', 'completedLessonsCount',
+                           'studyMinutes', 'listeningScore', 'readingScore', 'speakingScore',
+                           'writingScore', 'createdAt', 'updatedAt'
+                         ]);
+
+        allow update: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(progressId) &&
+                         isValidLanguageProgress(incoming()) &&
+                         incoming().userId == existing().userId &&
+                         incoming().languageId == existing().languageId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly([
+                           'currentLevel', 'completedLessonsCount', 'studyMinutes',
+                           'listeningScore', 'readingScore', 'speakingScore',
+                           'writingScore', 'updatedAt'
+                         ]);
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(progressId);
+      }
+
+      match /vocabulary/{vocabId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(vocabId);
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(vocabId) &&
+                         isValidVocabularyCard(incoming()) &&
+                         incoming().keys().hasAll([
+                           'userId', 'languageId', 'word', 'translation',
+                           'intervalDays', 'mistakeCount', 'createdAt', 'updatedAt'
+                         ]) &&
+                         incoming().keys().hasOnly([
+                           'userId', 'languageId', 'word', 'translation',
+                           'contextSentence', 'intervalDays', 'mistakeCount',
+                           'createdAt', 'updatedAt'
+                         ]);
+
+        allow update: if isOwner(userId) &&
+                         isValidId(userId) &&
+                         isValidId(vocabId) &&
+                         isValidVocabularyCard(incoming()) &&
+                         incoming().userId == existing().userId &&
+                         incoming().languageId == existing().languageId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly([
+                           'word', 'translation', 'contextSentence',
+                           'intervalDays', 'mistakeCount', 'updatedAt'
+                         ]);
+
+        allow delete: if isOwner(userId) && isValidId(userId) && isValidId(vocabId);
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "summary":  "Plan arquitectónico y de implementación completo para Cotorra, aplicación Android de aprendizaje de 10 idiomas (A1 a C1) con sesiones de 25 minutos, esencia cultural dominicana, arquitectura híbrida con puente nativo, Firebase Auth (Google Sign-In), Cloud Firestore y tutor conversacional con Firebase AI Logic (Gemini).",
+  "updatedAt":  "2026-10-22T16:13:01.570467257Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

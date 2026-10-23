@@ -1,0 +1,244 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Student profile, active language, daily 25-minute goal settings, virtual coins, lives, streak, and serialized local state sync.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID of the student."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the student."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the student."
+        },
+        "avatarId": {
+          "type": "string",
+          "description": "Selected Cotorra mascot avatar identifier."
+        },
+        "activeLanguageId": {
+          "type": "string",
+          "description": "ISO code of the currently active target language (en, fr, de, it, ru, zh, ja, ko, pt, ht)."
+        },
+        "activeLevel": {
+          "type": "string",
+          "description": "Current CEFR level in the active language (A1, A2, B1, B2, C1).",
+          "enum": ["A1", "A2", "B1", "B2", "C1"]
+        },
+        "dailyGoalMinutes": {
+          "type": "integer",
+          "description": "Daily study goal in minutes (default 25)."
+        },
+        "learningGoal": {
+          "type": "string",
+          "description": "Student motivation (travel, work, study, conversation, personal)."
+        },
+        "coins": {
+          "type": "integer",
+          "description": "Virtual coins earned by studying."
+        },
+        "lives": {
+          "type": "integer",
+          "description": "Available lives/attempts."
+        },
+        "currentStreak": {
+          "type": "integer",
+          "description": "Current consecutive days studied."
+        },
+        "bestStreak": {
+          "type": "integer",
+          "description": "Highest consecutive days studied."
+        },
+        "totalStudyMinutes": {
+          "type": "integer",
+          "description": "Cumulative study time in minutes."
+        },
+        "completedLessonsCount": {
+          "type": "integer",
+          "description": "Total completed lessons across languages."
+        },
+        "wordsLearnedCount": {
+          "type": "integer",
+          "description": "Total vocabulary words learned."
+        },
+        "isDarkTheme": {
+          "type": "boolean",
+          "description": "Whether dark mode is enabled."
+        },
+        "stateJson": {
+          "type": "string",
+          "description": "Synchronized state snapshot for multi-language progress, SRS queue, and custom 25-min distribution."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of profile creation via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last profile update via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "activeLanguageId",
+        "activeLevel",
+        "dailyGoalMinutes",
+        "coins",
+        "lives",
+        "currentStreak",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "LanguageProgress": {
+      "title": "LanguageProgress",
+      "description": "Independent learning path progress, CEFR level, and 4-skill competency scores for a specific language.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID of the student."
+        },
+        "languageId": {
+          "type": "string",
+          "description": "Language code (en, fr, de, it, ru, zh, ja, ko, pt, ht)."
+        },
+        "currentLevel": {
+          "type": "string",
+          "description": "Current CEFR level (A1, A2, B1, B2, C1).",
+          "enum": ["A1", "A2", "B1", "B2", "C1"]
+        },
+        "completedLessonsCount": {
+          "type": "integer",
+          "description": "Number of lessons completed in this language."
+        },
+        "studyMinutes": {
+          "type": "integer",
+          "description": "Minutes studied in this language."
+        },
+        "listeningScore": {
+          "type": "integer",
+          "description": "Estimated listening comprehension score (0-100)."
+        },
+        "readingScore": {
+          "type": "integer",
+          "description": "Estimated reading comprehension score (0-100)."
+        },
+        "speakingScore": {
+          "type": "integer",
+          "description": "Estimated oral expression score (0-100)."
+        },
+        "writingScore": {
+          "type": "integer",
+          "description": "Estimated written expression score (0-100)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of creation via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of update via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "languageId",
+        "currentLevel",
+        "completedLessonsCount",
+        "studyMinutes",
+        "listeningScore",
+        "readingScore",
+        "speakingScore",
+        "writingScore",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "VocabularyCard": {
+      "title": "VocabularyCard",
+      "description": "Spaced repetition (SRS) vocabulary item and mistake tracker.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Authenticated Firebase UID of the student."
+        },
+        "languageId": {
+          "type": "string",
+          "description": "Target language code."
+        },
+        "word": {
+          "type": "string",
+          "description": "Target word or phrase."
+        },
+        "translation": {
+          "type": "string",
+          "description": "Spanish translation."
+        },
+        "contextSentence": {
+          "type": "string",
+          "description": "Contextual example sentence."
+        },
+        "intervalDays": {
+          "type": "integer",
+          "description": "Current SRS review interval in days."
+        },
+        "mistakeCount": {
+          "type": "integer",
+          "description": "Number of times missed in exercises or conversation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of creation via FieldValue.serverTimestamp()."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of update via FieldValue.serverTimestamp()."
+        }
+      },
+      "required": [
+        "userId",
+        "languageId",
+        "word",
+        "translation",
+        "intervalDays",
+        "mistakeCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Per-user root document storing Cotorra student profile and synchronized study state."
+    },
+    "/users/{userId}/progress/{progressId}": {
+      "schema": {
+        "$ref": "#/entities/LanguageProgress"
+      },
+      "description": "Per-language CEFR progress and 4-skill competency breakdown under the authenticated user."
+    },
+    "/users/{userId}/vocabulary/{vocabId}": {
+      "schema": {
+        "$ref": "#/entities/VocabularyCard"
+      },
+      "description": "Spaced repetition vocabulary cards and recurrent error records under the authenticated user."
+    }
+  }
+}

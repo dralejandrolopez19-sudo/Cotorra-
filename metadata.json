@@ -1,0 +1,6 @@
+{
+  "name": "Cotorra",
+  "description": "Aprende diez idiomas desde A1 hasta C1 con sesiones diarias de 25 minutos, tutor conversacional con IA y esencia cultural dominicana.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

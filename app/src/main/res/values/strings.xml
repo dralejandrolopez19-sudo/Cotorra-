@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Cotorra</string>
+    <string name="cotorra_slogan">«Aprende idiomas, habla con el mundo. ¡Tú puedes, compa!»</string>
+    <string name="welcome_badge_languages">🇩🇴 10 Idiomas · MCER A1 a C1 · 25 Min/Día</string>
+    <string name="welcome_subtitle_languages">Inglés, Francés, Alemán, Italiano, Ruso, Chino, Japonés, Coreano, Portugués y Criollo Haitiano con método educativo y esencia dominicana.</string>
+    <string name="cd_cotorra_mascot">Mascota Cotorra</string>
+    <string name="sign_in_with_google">Iniciar sesión con Google</string>
+    <string name="start_learning_cta">Comenzar a aprender ahora</string>
+    <string name="cloud_synced_status">Sincronizado en la nube: %1$s</string>
+    <string name="local_mode_status">Cotorra · Progreso local activo</string>
+    <string name="connect_google_short">Conectar Google</string>
+    <string name="sign_out_label">Cerrar sesión</string>
+</resources>

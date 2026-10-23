@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Cotorra — Aprende Idiomas</title>
+  <style>
+    :root {
+      --primary: #0038A8;
+      --primary-dark: #002675;
+      --primary-soft: #E8F0FE;
+      --accent-red: #CE1126;
+      --accent-red-soft: #FEE2E2;
+      --success: #16A34A;
+      --success-soft: #DCFCE7;
+      --warning: #F59E0B;
+      --warning-soft: #FEF3C7;
+      --bg: #F3F6FC;
+      --surface: #FFFFFF;
+      --surface-alt: #F8FAFC;
+      --text: #0F172A;
+      --text-muted: #475569;
+      --border: #E2E8F0;
+      --shadow: 0 8px 24px rgba(0, 56, 168, 0.08);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    body.dark-mode {
+      --primary: #3B82F6;
+      --primary-dark: #2563EB;
+      --primary-soft: #1E293B;
+      --accent-red: #EF4444;
+      --accent-red-soft: #3F1D24;
+      --success: #22C55E;
+      --success-soft: #143323;
+      --warning: #FBBF24;
+      --warning-soft: #3B2F13;
+      --bg: #0B132B;
+      --surface: #16203A;
+      --surface-alt: #1E2B4D;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border: #2A3B63;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      overflow-x: hidden;
+      padding-bottom: 92px;
+    }
+
+    /* Top App Header */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .brand-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      background: #fff;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Welcome Hero Screen */
+    .welcome-hero {
+      min-height: calc(100vh - 32px);
+      background: linear-gradient(175deg, #0038A8 0%, #061A4E 100%);
+      color: #FFFFFF;
+      border-radius: 26px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0, 38, 117, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-hero-img {
+      width: 190px;
+      height: 215px;
+      object-fit: cover;
+      border-radius: 24px;
+      margin: 8px auto 12px;
+      border: 3px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    }
+
+    .welcome-logo {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin: 0;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .welcome-slogan {
+      font-size: 1.05rem;
+      font-weight: 600;
+      opacity: 0.95;
+      margin: 8px auto 16px;
+      max-width: 320px;
+    }
+
+    /* Cards & Buttons */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 50px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 6px 16px rgba(0, 56, 168, 0.25);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #FFFFFF;
+    }
+
+    .btn-danger {
+      background: var(--accent-red);
+      color: #FFFFFF;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outline-light {
+      background: rgba(255,255,255,0.12);
+      color: #FFFFFF;
+      border: 2px solid rgba(255,255,255,0.65);
+    }
+
+    .btn-sm {
+      width: auto;
+      min-height: 40px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+    }
+
+    /* Language Grid (10 Languages) */
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .lang-card {
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .lang-card.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      transform: translateY(-2px);
+    }
+
+    .lang-flag {
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .lang-name {
+      font-size: 0.84rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .lang-level-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: rgba(0, 56, 168, 0.1);
+      padding: 2px 7px;
+      border-radius: 99px;
+    }
+
+    /* Progress Bars */
+    .progress-track {
+      width: 100%;
+      height: 11px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), #22C55E);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-fill.blue {
+      background: linear-gradient(90deg, var(--primary), #3B82F6);
+    }
+
+    /* 25-Minute Session Distribution Bar */
+    .session-segments {
+      display: flex;
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+      gap: 2px;
+      margin: 10px 0;
+    }
+
+    .seg {
+      height: 100%;
+    }
+
+    .badge-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .chip-blue { background: var(--primary-soft); color: var(--primary); }
+    .chip-green { background: var(--success-soft); color: var(--success); }
+    .chip-red { background: var(--accent-red-soft); color: var(--accent-red); }
+    .chip-gold { background: var(--warning-soft); color: #B45309; }
+
+    /* Vertical Learning Path Map */
+    .path-node {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--surface);
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .path-node.completed {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .path-node.available {
+      border-color: var(--primary);
+      box-shadow: 0 6px 18px rgba(0, 56, 168, 0.14);
+    }
+
+    .path-node.locked {
+      opacity: 0.62;
+    }
+
+    .node-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .path-node.completed .node-circle { background: var(--success); }
+    .path-node.locked .node-circle { background: var(--text-muted); }
+
+    /* Exercise Options */
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      font-size: 0.96rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 52px;
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .option-btn.wrong {
+      border-color: var(--accent-red);
+      background: var(--accent-red-soft);
+    }
+
+    .word-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 14px;
+      margin: 4px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      min-height: 44px;
+    }
+
+    .word-chip.used {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+    }
+
+    /* Chat Bubbles for AI Tutor */
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding: 6px 2px;
+    }
+
+    .chat-bubble-tutor {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .chat-bubble-content {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 18px 18px 18px 4px;
+      padding: 12px 14px;
+      max-width: 85%;
+    }
+
+    .chat-bubble-user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #FFFFFF;
+      border-radius: 18px 18px 4px 18px;
+      padding: 12px 16px;
+      max-width: 82%;
+      font-weight: 600;
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 6px calc(10px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 6px 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 48px;
+      border-radius: 14px;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .nav-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .sub-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .sub-tab {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.84rem;
+      white-space: nowrap;
+      cursor: pointer;
+      min-height: 40px;
+    }
+
+    .sub-tab.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+
+    .stat-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .ToastBanner {
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="cotorra_curriculum.js"></script>
+  <script>
+    (function() {
+      const CURRICULUM = window.COTORRA_CURRICULUM;
+
+      // Default application state
+      const defaultState = {
+        screen: "home", // welcome | auth | onboarding | home | path | lesson | tutor | pronunciation | culture | progress | store | profile
+        practiceSubTab: "path", // path | tutor | pronunciation | culture | srs
+        progressSubTab: "summary", // summary | vocab | competencies
+        storeSubTab: "Todo",
+        toastMessage: null,
+        isAuthenticated: false,
+        user: {
+          uid: "",
+          name: "Compa Estudiante",
+          email: "",
+          avatarId: "avatar_classic",
+          activeLanguage: "en",
+          activeLevel: "A1",
+          dailyMinutes: 25,
+          quickModeActive: false,
+          goal: "conversation",
+          coins: 1250,
+          lives: 5,
+          streak: 12,
+          bestStreak: 14,
+          totalMinutes: 392,
+          completedLessonsCount: 18,
+          wordsLearnedCount: 248,
+          pronunciationCount: 3,
+          cultureExplored: true,
+          aiChatsCount: 2,
+          darkMode: false,
+          soundEnabled: true,
+          vibrationEnabled: true,
+          remindersEnabled: true,
+          reminderTime: "19:30",
+          sessionDistribution: {
+            srs: 5,
+            newContent: 7,
+            listeningOral: 5,
+            aiConversation: 5,
+            writingEval: 3
+          }
+        },
+        languageProgress: {
+          en: { level: "A1", completedIds: ["en_a1_1", "en_a1_2"], completedCount: 2, minutes: 145, listening: 74, reading: 82, speaking: 68, writing: 72 },
+          fr: { level: "A1", completedIds: [], completedCount: 0, minutes: 45, listening: 42, reading: 50, speaking: 38, writing: 40 },
+          de: { level: "A1", completedIds: [], completedCount: 0, minutes: 25, listening: 30, reading: 35, speaking: 28, writing: 30 },
+          it: { level: "A1", completedIds: [], completedCount: 0, minutes: 35, listening: 48, reading: 55, speaking: 44, writing: 42 },
+          ru: { level: "A1", completedIds: [], completedCount: 0, minutes: 20, listening: 25, reading: 30, speaking: 22, writing: 20 },
+          zh: { level: "A1", completedIds: [], completedCount: 0, minutes: 30, listening: 28, reading: 32, speaking: 25, writing: 24 },
+          ja: { level: "A1", completedIds: [], completedCount: 0, minutes: 32, listening: 34, reading: 30, speaking: 28, writing: 25 },
+          ko: { level: "A1", completedIds: [], completedCount: 0, minutes: 20, listening: 26, reading: 32, speaking: 24, writing: 22 },
+          pt: { level: "A1", completedIds: [], completedCount: 0, minutes: 25, listening: 55, reading: 62, speaking: 48, writing: 45 },
+          ht: { level: "A1", completedIds: [], completedCount: 0, minutes: 15, listening: 35, reading: 40, speaking: 32, writing: 30 }
+        },
+        srsDeck: [
+          { id: "v1", lang: "en", word: "Nice to meet you", translation: "Mucho gusto en conocerte", context: "Hi Sarah, nice to meet you!", intervalDays: 2, mistakes: 0, dueNow: true },
+          { id: "v2", lang: "en", word: "I am twenty-four years old", translation: "Tengo veinticuatro años", context: "Edad con verbo 'to be', nunca con 'have'.", intervalDays: 1, mistakes: 2, dueNow: true },
+          { id: "v3", lang: "en", word: "I would like the check, please", translation: "Quisiera la cuenta, por favor", context: "Cortesía en restaurante.", intervalDays: 3, mistakes: 1, dueNow: true },
+          { id: "v4", lang: "fr", word: "Je voudrais un café", translation: "Quisiera un café", context: "Condicional de cortesía en francés.", intervalDays: 2, mistakes: 0, dueNow: true },
+          { id: "v5", lang: "ht", word: "Kijan ou ye jodi a?", translation: "¿Cómo estás hoy?", context: "Saludo cotidiano en Kreyòl ayisyen.", intervalDays: 1, mistakes: 0, dueNow: true }
+        ],
+        ownedStoreIds: ["avatar_classic"],
+        unlockedBadgeIds: ["badge_first_lesson", "badge_streak_7", "badge_words_100", "badge_culture"],
+        // Active Lesson Runtime State
+        activeLesson: null,
+        lessonExIndex: 0,
+        selectedOption: null,
+        orderedWordsPicked: [],
+        matchedPairsState: { leftSelected: null, completedKeys: [] },
+        textAnswerInput: "",
+        oralTranscriptResult: null,
+        exerciseChecked: false,
+        exerciseIsCorrect: false,
+        lessonMistakes: [],
+        lessonCompletedSummary: null,
+        // Placement Test State
+        placementActive: false,
+        placementIndex: 0,
+        placementScore: 0,
+        placementResultLevel: null,
+        // AI Tutor State
+        tutorModeId: "daily_life",
+        tutorMessages: [],
+        tutorLoading: false,
+        tutorInputText: "",
+        recurrentMistakesLog: [
+          { lang: "en", note: "Usar 'I am X years old' en lugar de 'I have X years'." }
+        ],
+        // Pronunciation State
+        pronunciationIndex: 0,
+        pronunciationListening: false,
+        pronunciationLastFeedback: null,
+        pronunciationHistory: [
+          { lang: "en", phrase: "Good morning! How is it going today?", score: 92, date: "Hoy" }
+        ]
+      };
+
+      let state = JSON.parse(JSON.stringify(defaultState));
+
+      function initFromNative() {
+        try {
+          if (window.CotorraNativeBridge && window.CotorraNativeBridge.getInitialBootstrapJson) {
+            const raw = window.CotorraNativeBridge.getInitialBootstrapJson();
+            const boot = JSON.parse(raw);
+            if (boot.savedStateJson) {
+              const parsedSaved = JSON.parse(boot.savedStateJson);
+              state = Object.assign({}, defaultState, parsedSaved);
+              state.user = Object.assign({}, defaultState.user, parsedSaved.user || {});
+              state.languageProgress = Object.assign({}, defaultState.languageProgress, parsedSaved.languageProgress || {});
+            }
+            if (boot.isAuthenticated) {
+              state.isAuthenticated = true;
+              state.user.uid = boot.uid || state.user.uid;
+              if (boot.displayName) state.user.name = boot.displayName;
+              if (boot.email) state.user.email = boot.email;
+            }
+          }
+        } catch (e) {
+          console.warn("Bootstrap load fallback:", e);
+        }
+        applyTheme();
+        ensureTutorStarterMessage();
+      }
+
+      function persistState() {
+        try {
+          const snapshot = {
+            isAuthenticated: state.isAuthenticated,
+            user: state.user,
+            languageProgress: state.languageProgress,
+            srsDeck: state.srsDeck,
+            ownedStoreIds: state.ownedStoreIds,
+            unlockedBadgeIds: state.unlockedBadgeIds,
+            recurrentMistakesLog: state.recurrentMistakesLog,
+            pronunciationHistory: state.pronunciationHistory
+          };
+          const jsonStr = JSON.stringify(snapshot);
+          if (window.CotorraNativeBridge && window.CotorraNativeBridge.saveState) {
+            window.CotorraNativeBridge.saveState(jsonStr);
+          }
+        } catch (e) {
+          console.warn("Persist error:", e);
+        }
+      }
+
+      function applyTheme() {
+        if (state.user.darkMode) {
+          document.body.classList.add("dark-mode");
+        } else {
+          document.body.classList.remove("dark-mode");
+        }
+      }
+
+      function showToast(msg) {
+        state.toastMessage = msg;
+        render();
+        setTimeout(() => {
+          if (state.toastMessage === msg) {
+            state.toastMessage = null;
+            render();
+          }
+        }, 3200);
+      }
+
+      function getActiveLangObj() {
+        return CURRICULUM.languages.find(l => l.id === state.user.activeLanguage) || CURRICULUM.languages[0];
+      }
+
+      function getLessonsForLanguage(langId) {
+        if (langId === "en") {
+          return CURRICULUM.englishA1Lessons;
+        }
+        return CURRICULUM.starterLessonsByLang[langId] || CURRICULUM.englishA1Lessons;
+      }
+
+      function speakPhrase(text, langCode, slow) {
+        const code = langCode || state.user.activeLanguage;
+        if (window.CotorraNativeBridge && window.CotorraNativeBridge.speak) {
+          window.CotorraNativeBridge.speak(text, code, !!slow);
+        }
+      }
+
+      function vibrate(ok) {
+        if (state.user.vibrationEnabled && window.CotorraNativeBridge && window.CotorraNativeBridge.vibrateFeedback) {
+          window.CotorraNativeBridge.vibrateFeedback(!!ok);
+        }
+      }
+
+      function evaluateBadges() {
+        const unlocked = new Set(state.unlockedBadgeIds);
+        if (state.user.completedLessonsCount >= 1) unlocked.add("badge_first_lesson");
+        if (state.user.aiChatsCount >= 1) unlocked.add("badge_first_chat");
+        if (state.user.streak >= 7) unlocked.add("badge_streak_7");
+        if (state.user.wordsLearnedCount >= 100) unlocked.add("badge_words_100");
+        if (state.user.pronunciationCount >= 3) unlocked.add("badge_pronunciation");
+        if (state.user.cultureExplored) unlocked.add("badge_culture");
+        state.unlockedBadgeIds = Array.from(unlocked);
+      }
+
+      function ensureTutorStarterMessage() {
+        const lang = getActiveLangObj();
+        const mode = CURRICULUM.conversationModes.find(m => m.id === state.tutorModeId) || CURRICULUM.conversationModes[0];
+        if (!state.tutorMessages || state.tutorMessages.length === 0) {
+          const starter = (mode.starterByLang && mode.starterByLang[lang.id]) || mode.starterByLang.en;
+          state.tutorMessages = [
+            {
+              role: "tutor",
+              targetText: starter,
+              translationEs: "Escenario (" + mode.title + "): " + mode.scenarioEs,
+              dominicanTip: "¡Dímelo, compa! Responde en " + lang.name + " (nivel " + state.user.activeLevel + "). Te corregiré con cariño en español."
+            }
+          ];
+        }
+      }
+
+      // Native callbacks
+      window.onNativeAuthUpdate = function(authJsonStr) {
+        try {
+          const data = typeof authJsonStr === "string" ? JSON.parse(authJsonStr) : authJsonStr;
+          state.isAuthenticated = !!data.isAuthenticated;
+          if (data.isAuthenticated) {
+            state.user.uid = data.uid || "";
+            if (data.displayName) state.user.name = data.displayName;
+            if (data.email) state.user.email = data.email;
+            if (state.screen === "auth" || state.screen === "welcome") {
+              state.screen = "home";
+            }
+            showToast("¡Qué lo qué, " + state.user.name + "! Sesión conectada y sincronizada.");
+          } else {
+            state.user.uid = "";
+            showToast("Sesión cerrada correctamente.");
+          }
+          persistState();
+          render();
+        } catch (e) {
+          console.error(e);
+        }
+      };
+
+      window.onNativeTutorResponse = function(respJsonStr) {
+        state.tutorLoading = false;
+        try {
+          const res = typeof respJsonStr === "string" ? JSON.parse(respJsonStr) : respJsonStr;
+          if (res.status === "ok") {
+            state.tutorMessages.push({
+              role: "tutor",
+              targetText: res.replyTargetLang,
+              translationEs: res.translationEs,
+              hasMistake: !!res.hasMistake,
+              correctionEs: res.correctionEs,
+              naturalAlternative: res.naturalAlternative,
+              dominicanTip: res.dominicanTip
+            });
+            if (res.hasMistake && res.correctionEs) {
+              state.recurrentMistakesLog.unshift({
+                lang: state.user.activeLanguage,
+                note: res.correctionEs + (res.naturalAlternative ? " → Ejemplo natural: " + res.naturalAlternative : "")
+              });
+            }
+            speakPhrase(res.replyTargetLang, state.user.activeLanguage, false);
+          } else {
+            state.tutorMessages.push({
+              role: "tutor",
+              isFallbackNotice: true,
+              targetText: "Modo de Práctica Local Activo",
+              translationEs: res.message || "El servicio de IA remota no respondió en este momento.",
+              correctionEs: "Puedes continuar practicando con las preguntas guiadas locales o verificar tu conexión.",
+              naturalAlternative: "Could you tell me more about your day? / What would you like to do next?"
+            });
+          }
+        } catch (e) {
+          state.tutorMessages.push({
+            role: "tutor",
+            isFallbackNotice: true,
+            targetText: "Aviso de conexión con el Tutor IA",
+            translationEs: "No se pudo procesar la respuesta remota.",
+            correctionEs: "Utiliza las tarjetas de conversación guiada local mientras se restablece el servicio."
+          });
+        }
+        persistState();
+        render();
+      };
+
+      window.onNativeSpeechResult = function(speechJsonStr) {
+        state.pronunciationListening = false;
+        try {
+          const res = typeof speechJsonStr === "string" ? JSON.parse(speechJsonStr) : speechJsonStr;
+          const expected = (res.expected || "").trim();
+          if (res.status === "ok" && res.transcript) {
+            const spoken = res.transcript.trim();
+            const sim = computeWordSimilarity(expected, spoken);
+            state.oralTranscriptResult = {
+              status: "ok",
+              transcript: spoken,
+              score: sim,
+              message: sim >= 70
+                ? "¡Durísimo, compa! Pronunciación clara (" + sim + "% de coincidencia léxica)."
+                : "Se detectó: «" + spoken + "» (" + sim + "% de coincidencia). Escucha el audio lento y vuelve a intentarlo."
+            };
+            state.pronunciationLastFeedback = state.oralTranscriptResult;
+            state.user.pronunciationCount += 1;
+            state.pronunciationHistory.unshift({
+              lang: state.user.activeLanguage,
+              phrase: expected,
+              score: sim,
+              date: "Ahora"
+            });
+            evaluateBadges();
+            persistState();
+          } else {
+            const msg = res.message || "El micrófono no capturó voz en este entorno.";
+            state.oralTranscriptResult = {
+              status: "fallback",
+              transcript: "",
+              score: null,
+              message: msg + " (No afirmamos medir con precisión sin captura de audio verificada; puedes repetir la grabación o usar la autoevaluación fonética)."
+            };
+            state.pronunciationLastFeedback = state.oralTranscriptResult;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        render();
+      };
+
+      function computeWordSimilarity(expected, actual) {
+        const clean = s => s.toLowerCase().replace(/[.,!?¡¿'"']/g, "").split(/\s+/).filter(Boolean);
+        const expWords = clean(expected);
+        const actWords = clean(actual);
+        if (expWords.length === 0) return 100;
+        let matches = 0;
+        expWords.forEach(w => {
+          if (actWords.includes(w)) matches++;
+        });
+        return Math.min(100, Math.max(35, Math.round((matches / expWords.length) * 100)));
+      }
+
+      // Navigation helper
+      window.navTo = function(screenName, subTab) {
+        if (state.screen === "lesson" && state.activeLesson && !state.lessonCompletedSummary && screenName !== "lesson") {
+          const confirmExit = window.confirm("¿Seguro que quieres salir de la lección actual? Perderás el avance de los ejercicios en curso.");
+          if (!confirmExit) return;
+          state.activeLesson = null;
+        }
+        state.screen = screenName;
+        if (subTab) {
+          if (screenName === "practice") state.practiceSubTab = subTab;
+          if (screenName === "progress") state.progressSubTab = subTab;
+        }
+        window.scrollTo(0, 0);
+        render();
+      };
+
+      window.selectActiveLanguage = function(langId) {
+        state.user.activeLanguage = langId;
+        const prog = state.languageProgress[langId] || { level: "A1" };
+        state.user.activeLevel = prog.level || "A1";
+        state.tutorMessages = [];
+        ensureTutorStarterMessage();
+        state.pronunciationIndex = 0;
+        state.pronunciationLastFeedback = null;
+        const langObj = getActiveLangObj();
+        showToast("Idioma activo cambiado a " + langObj.flag + " " + langObj.name + " (" + state.user.activeLevel + ")");
+        persistState();
+        render();
+      };
+
+      window.setCefrLevelForActiveLang = function(levelCode) {
+        state.user.activeLevel = levelCode;
+        if (state.languageProgress[state.user.activeLanguage]) {
+          state.languageProgress[state.user.activeLanguage].level = levelCode;
+        }
+        state.tutorMessages = [];
+        ensureTutorStarterMessage();
+        persistState();
+        render();
+      };
+
+      window.startLessonById = function(lessonId) {
+        const lessons = getLessonsForLanguage(state.user.activeLanguage);
+        const lesson = lessons.find(l => l.id === lessonId) || lessons[0];
+        state.activeLesson = lesson;
+        state.lessonExIndex = 0;
+        state.lessonMistakes = [];
+        state.lessonCompletedSummary = null;
+        resetExerciseInteraction();
+        state.screen = "lesson";
+        window.scrollTo(0, 0);
+        const firstEx = lesson.exercises[0];
+        if (firstEx && firstEx.audioText) {
+          setTimeout(() => speakPhrase(firstEx.audioText, state.user.activeLanguage, false), 250);
+        }
+        render();
+      };
+
+      function resetExerciseInteraction() {
+        state.selectedOption = null;
+        state.orderedWordsPicked = [];
+        state.matchedPairsState = { leftSelected: null, rightSelected: null, completedKeys: [] };
+        state.textAnswerInput = "";
+        state.oralTranscriptResult = null;
+        state.exerciseChecked = false;
+        state.exerciseIsCorrect = false;
+      }
+
+      window.pickOption = function(opt) {
+        if (state.exerciseChecked) return;
+        state.selectedOption = opt;
+        render();
+      };
+
+      window.toggleWordBankIdx = function(idx) {
+        if (state.exerciseChecked) return;
+        const pos = state.orderedWordsPicked.indexOf(idx);
+        if (pos >= 0) {
+          state.orderedWordsPicked.splice(pos, 1);
+        } else {
+          state.orderedWordsPicked.push(idx);
+        }
+        render();
+      };
+
+      window.clickMatchItem = function(side, value) {
+        if (state.exerciseChecked) return;
+        const ex = state.activeLesson.exercises[state.lessonExIndex];
+        if (side === "left") {
+          if (state.matchedPairsState.rightSelected) {
+            const pairObj = ex.pairs.find(p => p.left === value && p.right === state.matchedPairsState.rightSelected);
+            if (pairObj) {
+              state.matchedPairsState.completedKeys.push(pairObj.left + ":" + pairObj.right);
+              state.matchedPairsState.leftSelected = null;
+              state.matchedPairsState.rightSelected = null;
+              vibrate(true);
+            } else {
+              vibrate(false);
+              showToast("Ese par no coincide, ¡inténtalo de nuevo, compa!");
+              state.matchedPairsState.leftSelected = null;
+              state.matchedPairsState.rightSelected = null;
+            }
+          } else {
+            state.matchedPairsState.leftSelected = value;
+          }
+        } else if (side === "right") {
+          if (state.matchedPairsState.leftSelected) {
+            const pairObj = ex.pairs.find(p => p.left === state.matchedPairsState.leftSelected && p.right === value);
+            if (pairObj) {
+              state.matchedPairsState.completedKeys.push(pairObj.left + ":" + pairObj.right);
+              state.matchedPairsState.leftSelected = null;
+              state.matchedPairsState.rightSelected = null;
+              vibrate(true);
+            } else {
+              vibrate(false);
+              showToast("Ese par no coincide, ¡inténtalo de nuevo, compa!");
+              state.matchedPairsState.leftSelected = null;
+              state.matchedPairsState.rightSelected = null;
+            }
+          } else {
+            state.matchedPairsState.rightSelected = value;
+          }
+        }
+        render();
+      };
+
+      window.updateTextAnswer = function(val) {
+        state.textAnswerInput = val;
+      };
+
+      window.triggerOralExerciseMic = function(expectedText) {
+        state.pronunciationListening = true;
+        render();
+        if (window.CotorraNativeBridge && window.CotorraNativeBridge.startPronunciationCapture) {
+          window.CotorraNativeBridge.startPronunciationCapture(state.user.activeLanguage, expectedText);
+        }
+      };
+
+      window.markOralSelfPracticeComplete = function(expectedText) {
+        state.oralTranscriptResult = {
+          status: "self_verified",
+          transcript: expectedText,
+          score: null,
+          message: "Práctica oral completada tras escuchar el modelo de audio."
+        };
+        render();
+      };
+
+      function normalizeStr(s) {
+        return (s || "").toLowerCase().replace(/[.,!?¡¿'"']/g, "").replace(/\s+/g, " ").trim();
+      }
+
+      window.checkCurrentExercise = function() {
+        const ex = state.activeLesson.exercises[state.lessonExIndex];
+        let isCorrect = false;
+        let userAnswerDisplay = "";
+
+        if (ex.type === "MULTIPLE_CHOICE" || ex.type === "LISTEN_SELECT" || ex.type === "FILL_BLANK" || ex.type === "READING_COMPREHENSION") {
+          if (!state.selectedOption) {
+            showToast("Selecciona una respuesta primero.");
+            return;
+          }
+          userAnswerDisplay = state.selectedOption;
+          isCorrect = normalizeStr(state.selectedOption) === normalizeStr(ex.correctAnswer);
+        } else if (ex.type === "ORDER_WORDS" || ex.type === "SENTENCE_BUILDER") {
+          const built = state.orderedWordsPicked.map(i => ex.words[i]).join(" ");
+          if (!built) {
+            showToast("Toca las palabras para armar la oración.");
+            return;
+          }
+          userAnswerDisplay = built;
+          isCorrect = normalizeStr(built) === normalizeStr(ex.correctAnswer);
+        } else if (ex.type === "MATCH_PAIRS") {
+          if (state.matchedPairsState.completedKeys.length < ex.pairs.length) {
+            showToast("Empareja todas las tarjetas antes de comprobar.");
+            return;
+          }
+          isCorrect = true;
+        } else if (ex.type === "CONTEXTUAL_TRANSLATION" || ex.type === "DICTATION") {
+          const domInput = document.getElementById("exerciseTextInput");
+          if (domInput && domInput.value) state.textAnswerInput = domInput.value;
+          const typed = state.textAnswerInput.trim();
+          if (!typed) {
+            showToast("Escribe tu respuesta antes de comprobar.");
+            return;
+          }
+          userAnswerDisplay = typed;
+          const validList = [ex.correctAnswer].concat(ex.acceptedAlternatives || []);
+          isCorrect = validList.some(ans => normalizeStr(ans) === normalizeStr(typed));
+        } else if (ex.type === "FREE_WRITING") {
+          const domInput = document.getElementById("exerciseTextInput");
+          if (domInput && domInput.value) state.textAnswerInput = domInput.value;
+          const typed = state.textAnswerInput.trim();
+          const wordsCount = typed.split(/\s+/).filter(Boolean).length;
+          if (wordsCount < (ex.minWords || 3)) {
+            showToast("Escribe al menos " + (ex.minWords || 3) + " palabras en el idioma de estudio.");
+            return;
+          }
+          userAnswerDisplay = typed;
+          const kwList = ex.requiredKeywords || [];
+          const hasKeywords = kwList.length === 0 || kwList.some(kw => normalizeStr(typed).includes(normalizeStr(kw))) || wordsCount >= 4;
+          isCorrect = hasKeywords;
+        } else if (ex.type === "ORAL_REPEAT") {
+          if (!state.oralTranscriptResult) {
+            showToast("Usa el botón de micrófono o confirma tu repetición en voz alta.");
+            return;
+          }
+          isCorrect = true;
+        }
+
+        state.exerciseChecked = true;
+        state.exerciseIsCorrect = isCorrect;
+        vibrate(isCorrect);
+
+        if (!isCorrect) {
+          state.user.lives = Math.max(1, state.user.lives - 1);
+          state.lessonMistakes.push({
+            prompt: ex.instruction,
+            correctAnswer: ex.correctAnswer,
+            explanationEs: ex.explanationEs
+          });
+          // Add to SRS deck for personalized spaced repetition
+          state.srsDeck.unshift({
+            id: "srs_" + Date.now(),
+            lang: state.user.activeLanguage,
+            word: ex.correctAnswer,
+            translation: ex.explanationEs,
+            context: ex.instruction,
+            intervalDays: 1,
+            mistakes: 1,
+            dueNow: true
+          });
+        }
+        render();
+      };
+
+      window.nextExerciseOrFinish = function() {
+        const lesson = state.activeLesson;
+        if (state.lessonExIndex + 1 < lesson.exercises.length) {
+          state.lessonExIndex += 1;
+          resetExerciseInteraction();
+          const nextEx = lesson.exercises[state.lessonExIndex];
+          if (nextEx && nextEx.audioText) {
+            setTimeout(() => speakPhrase(nextEx.audioText, state.user.activeLanguage, false), 200);
+          }
+          render();
+        } else {
+          // Finish lesson
+          const langCode = state.user.activeLanguage;
+          const prog = state.languageProgress[langCode] || {
+            level: "A1", completedIds: [], completedCount: 0, minutes: 0,
+            listening: 60, reading: 65, speaking: 58, writing: 60
+          };
+          if (!prog.completedIds) prog.completedIds = [];
+          if (!prog.completedIds.includes(lesson.id)) {
+            prog.completedIds.push(lesson.id);
+            prog.completedCount = prog.completedIds.length;
+          }
+          prog.minutes += lesson.durationMin || 7;
+          prog.listening = Math.min(100, (prog.listening || 60) + 3);
+          prog.reading = Math.min(100, (prog.reading || 65) + 3);
+          prog.speaking = Math.min(100, (prog.speaking || 58) + 3);
+          prog.writing = Math.min(100, (prog.writing || 60) + 3);
+          state.languageProgress[langCode] = prog;
+
+          state.user.coins += lesson.coinReward || 25;
+          state.user.totalMinutes += lesson.durationMin || 7;
+          state.user.completedLessonsCount += 1;
+          state.user.wordsLearnedCount += 5;
+          evaluateBadges();
+
+          const totalEx = lesson.exercises.length;
+          const accuracy = Math.max(0, Math.round(((totalEx - state.lessonMistakes.length) / totalEx) * 100));
+          state.lessonCompletedSummary = {
+            title: lesson.title,
+            xpEarned: lesson.xpReward || 45,
+            coinsEarned: lesson.coinReward || 25,
+            accuracy: accuracy,
+            mistakes: state.lessonMistakes
+          };
+          persistState();
+          render();
+        }
+      };
+
+      // SRS review actions
+      window.gradeSrsCard = function(cardId, rememberedWell) {
+        const card = state.srsDeck.find(c => c.id === cardId);
+        if (card) {
+          if (rememberedWell) {
+            card.intervalDays = Math.min(60, (card.intervalDays || 1) * 2);
+            card.dueNow = false;
+            state.user.coins += 5;
+            showToast("¡Bien ahí! Próximo repaso en " + card.intervalDays + " días (+5 monedas).");
+          } else {
+            card.intervalDays = 1;
+            card.mistakes = (card.mistakes || 0) + 1;
+            showToast("Programado para repaso prioritario hoy.");
+          }
+          persistState();
+          render();
+        }
+      };
+
+      // AI Tutor actions
+      window.selectTutorMode = function(modeId) {
+        state.tutorModeId = modeId;
+        state.tutorMessages = [];
+        ensureTutorStarterMessage();
+        render();
+      };
+
+      window.sendUserChatToTutor = function() {
+        const inputEl = document.getElementById("tutorInputBox");
+        const msg = (inputEl ? inputEl.value : state.tutorInputText).trim();
+        if (!msg || state.tutorLoading) return;
+
+        state.tutorMessages.push({ role: "user", text: msg });
+        state.tutorInputText = "";
+        state.tutorLoading = true;
+        state.user.aiChatsCount += 1;
+        evaluateBadges();
+        render();
+
+        const langObj = getActiveLangObj();
+        const modeObj = CURRICULUM.conversationModes.find(m => m.id === state.tutorModeId) || CURRICULUM.conversationModes[0];
+        const historyText = state.tutorMessages.slice(-6).map(m =>
+          m.role === "user" ? ("Estudiante: " + m.text) : ("Tutor Cotorra: " + m.targetText)
+        ).join("\n");
+
+        if (window.CotorraNativeBridge && window.CotorraNativeBridge.sendTutorMessage) {
+          window.CotorraNativeBridge.sendTutorMessage(
+            langObj.name,
+            state.user.activeLevel,
+            modeObj.title,
+            msg,
+            historyText
+          );
+        } else {
+          window.onNativeTutorResponse(JSON.stringify({
+            status: "error",
+            message: "Puente nativo de IA no disponible."
+          }));
+        }
+      };
+
+      // Store actions
+      window.buyStoreItem = function(itemId) {
+        const item = CURRICULUM.storeItems.find(i => i.id === itemId);
+        if (!item) return;
+        if (!item.consumable && state.ownedStoreIds.includes(itemId)) {
+          if (item.category === "Avatares") {
+            state.user.avatarId = itemId;
+            showToast("Avatar equipado: " + item.title);
+            persistState();
+            render();
+          }
+          return;
+        }
+        if (state.user.coins < item.price) {
+          showToast("Te faltan monedas. ¡Completa una lección o repaso para ganar más!");
+          return;
+        }
+        state.user.coins -= item.price;
+        if (item.consumable && item.id === "extra_lives") {
+          state.user.lives = Math.min(50, state.user.lives + 5);
+          showToast("¡+5 vidas añadidas a tu cuenta!");
+        } else {
+          state.ownedStoreIds.push(itemId);
+          if (item.category === "Avatares") state.user.avatarId = itemId;
+          showToast("¡Canjeaste «" + item.title + "» con éxito!");
+        }
+        vibrate(true);
+        persistState();
+        render();
+      };
+
+      // Placement Test handlers
+      window.startPlacementTest = function() {
+        state.placementActive = true;
+        state.placementIndex = 0;
+        state.placementScore = 0;
+        state.placementResultLevel = null;
+        render();
+      };
+
+      window.answerPlacementQuestion = function(opt) {
+        const q = CURRICULUM.placementQuestions[state.placementIndex];
+        if (opt === q.correct) {
+          state.placementScore += 1;
+        }
+        if (state.placementIndex + 1 < CURRICULUM.placementQuestions.length) {
+          state.placementIndex += 1;
+        } else {
+          const s = state.placementScore;
+          const recLevel = s <= 1 ? "A1" : s === 2 ? "A2" : s === 3 ? "B1" : s === 4 ? "B2" : "C1";
+          state.placementResultLevel = recLevel;
+          state.user.activeLevel = recLevel;
+          if (state.languageProgress[state.user.activeLanguage]) {
+            state.languageProgress[state.user.activeLanguage].level = recLevel;
+          }
+          persistState();
+        }
+        render();
+      };
+
+      window.toggleDarkTheme = function() {
+        state.user.darkMode = !state.user.darkMode;
+        applyTheme();
+        persistState();
+        render();
+      };
+
+      window.toggleQuickMode = function() {
+        state.user.quickModeActive = !state.user.quickModeActive;
+        state.user.dailyMinutes = state.user.quickModeActive ? 10 : 25;
+        showToast(state.user.quickModeActive
+          ? "Modo Rápido de 10 min activado para días ocupados."
+          : "Sesión estándar de 25 minutos restaurada.");
+        persistState();
+        render();
+      };
+
+      window.updateDistributionBlock = function(key, val) {
+        const num = Math.max(1, Math.min(20, parseInt(val, 10) || 5));
+        state.user.sessionDistribution[key] = num;
+        const d = state.user.sessionDistribution;
+        state.user.dailyMinutes = d.srs + d.newContent + d.listeningOral + d.aiConversation + d.writingEval;
+        persistState();
+        render();
+      };
+
+      window.exportUserDataJson = function() {
+        const dataStr = JSON.stringify({
+          exportedAt: new Date().toISOString(),
+          app: "Cotorra Android",
+          user: state.user,
+          languageProgress: state.languageProgress,
+          srsDeckCount: state.srsDeck.length
+        }, null, 2);
+        window.alert("Exportación JSON generada:\n\n" + dataStr.slice(0, 750) + "\n...");
+      };
+
+      window.resetAllUserData = function() {
+        if (window.confirm("¿Seguro que deseas restablecer todo tu progreso local de Cotorra? Esta acción no se puede deshacer.")) {
+          if (window.CotorraNativeBridge && window.CotorraNativeBridge.clearAllLocalData) {
+            window.CotorraNativeBridge.clearAllLocalData();
+          }
+          state = JSON.parse(JSON.stringify(defaultState));
+          applyTheme();
+          showToast("Datos locales restablecidos.");
+          render();
+        }
+      };
+
+      // --- SCREEN RENDERERS ---
+
+      function renderTopHeader() {
+        if (state.screen === "welcome") return "";
+        const lang = getActiveLangObj();
+        return `
+          <header class="top-header">
+            <div class="brand-row" onclick="navTo('home')">
+              <img src="cotorra_mascot_avatar.png" alt="Cotorra" class="brand-avatar" />
+              <div>
+                <div class="brand-title">Cotorra <span>🇩🇴</span></div>
+                <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">
+                  ${lang.flag} ${lang.name} · Nivel ${state.user.activeLevel}
+                </div>
+              </div>
+            </div>
+            <div class="status-pills">
+              <div class="stat-pill" onclick="navTo('progress')" title="Racha de días">
+                🔥 <span>${state.user.streak}</span>
+              </div>
+              <div class="stat-pill" onclick="navTo('store')" title="Monedas virtuales">
+                🪙 <span>${state.user.coins}</span>
+              </div>
+              <div class="stat-pill" onclick="navTo('store')" title="Vidas disponibles">
+                ❤️ <span>${state.user.lives}</span>
+              </div>
+            </div>
+          </header>
+        `;
+      }
+
+      function renderWelcomeScreen() {
+        return `
+          <div class="container" style="padding-top:14px;">
+            <div class="welcome-hero">
+              <div>
+                <span class="badge-chip" style="background:rgba(255,255,255,0.18); color:#fff; margin-bottom:8px;">
+                  🇩🇴 10 Idiomas · MCER A1 a C1 · 25 Min/Día
+                </span>
+                <img src="cotorra_welcome_hero.png" alt="Mascota Cotorra" class="welcome-hero-img" />
+                <h1 class="welcome-logo">Cotorra</h1>
+                <p class="welcome-slogan">«Aprende idiomas, habla con el mundo. ¡Tú puedes, compa!»</p>
+                <p style="font-size:0.86rem; opacity:0.88; max-width:330px; margin:0 auto 18px;">
+                  Inglés, Francés, Alemán, Italiano, Ruso, Chino, Japonés, Coreano, Portugués y Criollo Haitiano con método científico y actitud dominicana.
+                </p>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <button class="btn" style="background:#16A34A; color:#fff;" onclick="navTo('onboarding')">
+                  🚀 Comenzar ahora
+                </button>
+                <button class="btn btn-outline-light" onclick="navTo('auth')">
+                  🔐 Iniciar sesión / Mi cuenta
+                </button>
+                <div style="font-size:0.75rem; opacity:0.8; margin-top:4px;">
+                  Idioma de interfaz: Español (ES) · Próximamente más idiomas
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderAuthScreen() {
+        return `
+          <div class="container">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">🔐 Registro e Inicio de Sesión</h2>
+                <button class="btn btn-sm btn-outline" onclick="navTo('home')">Volver</button>
+              </div>
+              <p style="font-size:0.9rem; color:var(--text-muted); margin-top:0;">
+                Sincroniza tu racha, tus monedas y tus rutas en los 10 idiomas con Cloud Firestore mediante tu cuenta de Google.
+              </p>
+
+              ${state.isAuthenticated ? `
+                <div style="padding:14px; border-radius:16px; background:var(--success-soft); border:1px solid var(--success); margin-bottom:14px;">
+                  <div style="font-weight:800; color:var(--success);">✅ Sesión autenticada con Google</div>
+                  <div style="font-size:0.9rem; margin-top:4px;"><strong>Estudiante:</strong> ${state.user.name}</div>
+                  <div style="font-size:0.84rem; color:var(--text-muted);">${state.user.email || "Sincronización Cloud Firestore activa"}</div>
+                </div>
+                <button class="btn btn-danger" onclick="window.CotorraNativeBridge && window.CotorraNativeBridge.triggerSignOut()">
+                  Cerrar sesión
+                </button>
+              ` : `
+                <button class="btn btn-primary" style="margin-bottom:14px;" onclick="window.CotorraNativeBridge && window.CotorraNativeBridge.triggerGoogleSignIn()">
+                  🔵 Continuar con Google (Credential Manager)
+                </button>
+              `}
+
+              <hr style="border:none; border-top:1px solid var(--border); margin:18px 0;" />
+
+              <h3 style="font-size:0.95rem; margin:0 0 8px;">Acceso rápido de perfil</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0;">
+                Configura tu nombre y correo de estudiante o vincula directamente tu cuenta de Google con Cloud Firestore.
+              </p>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <input id="authNameInput" class="input-field" type="text" placeholder="Tu nombre (ej. Alejandro)" value="${state.user.name.replace(/"/g, '&quot;')}" />
+                <input id="authEmailInput" class="input-field" type="email" placeholder="Correo electrónico (ej. compa@correo.do)" value="${(state.user.email || '').replace(/"/g, '&quot;')}" />
+                <button class="btn btn-outline" onclick="window.saveDirectProfileAuth()">
+                  Guardar perfil y continuar
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      window.saveDirectProfileAuth = function() {
+        const nameEl = document.getElementById("authNameInput");
+        const emailEl = document.getElementById("authEmailInput");
+        const newName = (nameEl ? nameEl.value : "").trim();
+        const newEmail = (emailEl ? emailEl.value : "").trim();
+        if (newName) state.user.name = newName;
+        if (newEmail) state.user.email = newEmail;
+        state.isAuthenticated = true;
+        persistState();
+        showToast("¡Perfil de " + state.user.name + " actualizado y sincronizado!");
+        navTo("home");
+      };
+
+      function renderOnboardingScreen() {
+        const lang = getActiveLangObj();
+        return `
+          <div class="container">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">🧭 Configuración Inicial</h2>
+                <span class="badge-chip chip-blue">Paso a paso</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text-muted); margin-top:0;">
+                Personaliza tu plan diario en Cotorra. Cada idioma tiene su propia ruta independiente desde A1 hasta C1.
+              </p>
+
+              <label style="font-weight:800; font-size:0.9rem; display:block; margin-bottom:6px;">
+                1. ¿Qué idioma quieres aprender hoy?
+              </label>
+              <div class="lang-grid" style="margin-bottom:16px;">
+                ${CURRICULUM.languages.map(l => `
+                  <div class="lang-card ${state.user.activeLanguage === l.id ? 'active' : ''}" onclick="selectActiveLanguage('${l.id}')">
+                    <span class="lang-flag">${l.flag}</span>
+                    <span class="lang-name">${l.name}</span>
+                    <span class="lang-level-tag">${l.lessonsPerLevel.A1} lecc. A1</span>
+                  </div>
+                `).join("")}
+              </div>
+
+              <label style="font-weight:800; font-size:0.9rem; display:block; margin-bottom:6px;">
+                2. ¿Qué nivel MCER crees tener en ${lang.name}?
+              </label>
+              <div class="sub-tabs">
+                ${CURRICULUM.cefrLevels.map(lvl => `
+                  <button class="sub-tab ${state.user.activeLevel === lvl.code ? 'active' : ''}" onclick="setCefrLevelForActiveLang('${lvl.code}')">
+                    ${lvl.code} · ${lvl.name.split(" ")[0]}
+                  </button>
+                `).join("")}
+              </div>
+
+              <label style="font-weight:800; font-size:0.9rem; display:block; margin-bottom:6px;">
+                3. ¿Cuál es tu objetivo principal?
+              </label>
+              <div class="sub-tabs">
+                ${[
+                  { id: "travel", label: "✈️ Viajar" },
+                  { id: "work", label: "💼 Trabajar" },
+                  { id: "study", label: "🎓 Estudiar" },
+                  { id: "conversation", label: "🗣️ Conversar" },
+                  { id: "personal", label: "🌟 Desarrollo personal" }
+                ].map(g => `
+                  <button class="sub-tab ${state.user.goal === g.id ? 'active' : ''}" onclick="window.setGoalChoice('${g.id}')">
+                    ${g.label}
+                  </button>
+                `).join("")}
+              </div>
+
+              <div style="background:var(--surface-alt); border:1px solid var(--border); border-radius:16px; padding:14px; margin:14px 0;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div style="font-weight:800; font-size:0.92rem;">🧪 Prueba de Nivel Opcional</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted);">Evalúa tu punto de partida con 5 preguntas rápidas A1–C1.</div>
+                  </div>
+                  <button class="btn btn-sm btn-outline" onclick="startPlacementTest()">Hacer prueba</button>
+                </div>
+
+                ${state.placementActive ? renderPlacementModalInline() : ""}
+              </div>
+
+              <button class="btn btn-primary" onclick="navTo('home')">
+                ¡Vamo' arriba! Ir a mi panel de estudio
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      window.setGoalChoice = function(goalId) {
+        state.user.goal = goalId;
+        persistState();
+        render();
+      };
+
+      function renderPlacementModalInline() {
+        if (state.placementResultLevel) {
+          return `
+            <div style="margin-top:12px; padding:12px; border-radius:12px; background:var(--success-soft); border:1px solid var(--success);">
+              <div style="font-weight:800; color:var(--success);">
+                🎯 Resultado diagnóstico: Nivel recomendado ${state.placementResultLevel} (${state.placementScore}/5 aciertos)
+              </div>
+              <div style="font-size:0.82rem; margin-top:4px;">
+                Hemos ajustado tu nivel inicial a <strong>${state.placementResultLevel}</strong>. Recuerda que este resultado es orientativo y no equivale a un certificado oficial MCER.
+              </div>
+            </div>
+          `;
+        }
+        const q = CURRICULUM.placementQuestions[state.placementIndex];
+        return `
+          <div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
+            <div style="font-size:0.78rem; font-weight:800; color:var(--primary);">
+              Pregunta ${state.placementIndex + 1} de ${CURRICULUM.placementQuestions.length} · Nivel ${q.levelTag}
+            </div>
+            <div style="font-weight:700; margin:6px 0 10px;">${q.question}</div>
+            ${q.options.map(opt => `
+              <button class="option-btn" onclick="answerPlacementQuestion('${opt.replace(/'/g, "\\'")}')">
+                <span>${opt}</span>
+                <span>→</span>
+              </button>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderHomeScreen() {
+        const lang = getActiveLangObj();
+        const prog = state.languageProgress[lang.id] || { level: "A1", completedCount: 0, minutes: 0 };
+        const totalPlanned = lang.lessonsPerLevel[state.user.activeLevel] || 120;
+        const pct = Math.min(100, Math.max(8, Math.round(((prog.completedCount || 1) / 10) * 100)));
+        const dist = state.user.sessionDistribution;
+        const dueSrsCount = state.srsDeck.filter(c => c.dueNow).length;
+        const lessons = getLessonsForLanguage(lang.id);
+        const nextLesson = lessons.find(l => !(prog.completedIds || []).includes(l.id)) || lessons[0];
+
+        return `
+          <div class="container">
+            <!-- Greeting & Active Progress Card -->
+            <div class="card" style="background:linear-gradient(135deg, #0038A8 0%, #0D47A1 100%); color:#FFFFFF; border:none;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                <div>
+                  <span class="badge-chip" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:6px;">
+                    🦜 ¡Buenas, compa! 👋
+                  </span>
+                  <h2 style="margin:4px 0; font-size:1.3rem; font-weight:900;">
+                    Hoy es un gran día para hablar ${lang.name}
+                  </h2>
+                  <p style="margin:0; font-size:0.86rem; opacity:0.9;">
+                    Nivel actual: <strong>${state.user.activeLevel}</strong> · Meta: <strong>${state.user.dailyMinutes} min/día</strong>
+                  </p>
+                </div>
+                <button class="btn btn-sm" style="background:rgba(255,255,255,0.18); color:#fff; width:auto;" onclick="navTo('onboarding')">
+                  ⚙️ Nivel
+                </button>
+              </div>
+
+              <div style="background:rgba(255,255,255,0.13); border-radius:16px; padding:12px; margin:14px 0;">
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:700;">
+                  <span>Progreso de la unidad activa (${lang.flag} ${lang.name})</span>
+                  <span>${pct}% · Plan ${state.user.activeLevel}: ${totalPlanned} lecciones</span>
+                </div>
+                <div class="progress-track" style="background:rgba(255,255,255,0.25);">
+                  <div class="progress-fill" style="width:${pct}%;"></div>
+                </div>
+                <div style="font-size:0.78rem; opacity:0.92;">
+                  Siguiente recomendación: <strong>${nextLesson.title}</strong> (${nextLesson.durationMin} min)
+                </div>
+              </div>
+
+              <button class="btn" style="background:#16A34A; color:#fff;" onclick="startLessonById('${nextLesson.id}')">
+                ▶️ Continuar aprendiendo: ${nextLesson.title}
+              </button>
+            </div>
+
+            <!-- 25-Minute Daily Session Structure Card -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">⏱️ Sesión Diaria de ${state.user.dailyMinutes} Minutos</h3>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">
+                    Diseñada para retención activa y uso real del idioma
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline" onclick="toggleQuickMode()">
+                  ${state.user.quickModeActive ? "⚡ Modo 10m Activo" : "Modo Rápido"}
+                </button>
+              </div>
+
+              <div class="session-segments">
+                <div class="seg" style="flex:${dist.srs}; background:#F59E0B;" title="Repaso SRS"></div>
+                <div class="seg" style="flex:${dist.newContent}; background:#0038A8;" title="Contenido nuevo"></div>
+                <div class="seg" style="flex:${dist.listeningOral}; background:#16A34A;" title="Escucha y pronunciación"></div>
+                <div class="seg" style="flex:${dist.aiConversation}; background:#8B5CF6;" title="Conversación IA"></div>
+                <div class="seg" style="flex:${dist.writingEval}; background:#CE1126;" title="Escritura y evaluación"></div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; font-size:0.8rem; margin-top:10px;">
+                <div style="padding:8px 10px; border-radius:12px; background:var(--surface-alt); cursor:pointer;" onclick="navTo('practice', 'srs')">
+                  🟡 <strong>${dist.srs} min:</strong> Repaso espaciado (${dueSrsCount} pendientes)
+                </div>
+                <div style="padding:8px 10px; border-radius:12px; background:var(--surface-alt); cursor:pointer;" onclick="startLessonById('${nextLesson.id}')">
+                  🔵 <strong>${dist.newContent} min:</strong> Contenido nuevo
+                </div>
+                <div style="padding:8px 10px; border-radius:12px; background:var(--surface-alt); cursor:pointer;" onclick="navTo('practice', 'pronunciation')">
+                  🟢 <strong>${dist.listeningOral} min:</strong> Escucha y pronunciación
+                </div>
+                <div style="padding:8px 10px; border-radius:12px; background:var(--surface-alt); cursor:pointer;" onclick="navTo('practice', 'tutor')">
+                  🟣 <strong>${dist.aiConversation} min:</strong> Tutor conversacional IA
+                </div>
+              </div>
+              <div style="margin-top:8px; padding:8px 10px; border-radius:12px; background:var(--surface-alt); font-size:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+                <span>🔴 <strong>${dist.writingEval} min:</strong> Escritura libre y evaluación acumulativa</span>
+                <span style="color:var(--primary); font-weight:800; cursor:pointer;" onclick="navTo('profile')">Personalizar →</span>
+              </div>
+            </div>
+
+            <!-- Choose Your Language Grid (All 10 Languages) -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">🌍 Elige tu idioma (10 rutas A1–C1)</h3>
+                <span class="badge-chip chip-blue">Independientes</span>
+              </div>
+              <div class="lang-grid">
+                ${CURRICULUM.languages.map(l => {
+                  const lp = state.languageProgress[l.id] || { level: "A1" };
+                  return `
+                    <div class="lang-card ${state.user.activeLanguage === l.id ? 'active' : ''}" onclick="selectActiveLanguage('${l.id}')">
+                      <span class="lang-flag">${l.flag}</span>
+                      <span class="lang-name">${l.name}</span>
+                      <span class="lang-level-tag">Nivel ${lp.level}</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+
+            <!-- Quick Access Cards: Culture & Pending Reviews -->
+            <div class="stat-grid-2">
+              <div class="card" style="margin-bottom:0; cursor:pointer;" onclick="navTo('practice', 'culture')">
+                <div style="font-size:1.4rem;">🇩🇴</div>
+                <div style="font-weight:800; font-size:0.92rem; margin-top:4px;">Esencia Dominicana</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">
+                  «¿Qué lo qué?», «Vamo' arriba» y registro formal.
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:0; cursor:pointer;" onclick="navTo('practice', 'srs')">
+                <div style="font-size:1.4rem;">🧠</div>
+                <div style="font-weight:800; font-size:0.92rem; margin-top:4px;">Repasos SRS (${dueSrsCount})</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">
+                  Refuerza vocabulario y errores frecuentes.
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderPracticeHubScreen() {
+        const sub = state.practiceSubTab || "path";
+        return `
+          <div class="container">
+            <div class="sub-tabs">
+              <button class="sub-tab ${sub === 'path' ? 'active' : ''}" onclick="navTo('practice', 'path')">🗺️ Ruta MCER</button>
+              <button class="sub-tab ${sub === 'tutor' ? 'active' : ''}" onclick="navTo('practice', 'tutor')">🤖 Tutor IA</button>
+              <button class="sub-tab ${sub === 'pronunciation' ? 'active' : ''}" onclick="navTo('practice', 'pronunciation')">🎙️ Pronunciación</button>
+              <button class="sub-tab ${sub === 'srs' ? 'active' : ''}" onclick="navTo('practice', 'srs')">🧠 Repaso SRS</button>
+              <button class="sub-tab ${sub === 'culture' ? 'active' : ''}" onclick="navTo('practice', 'culture')">🇩🇴 Cultura RD</button>
+            </div>
+
+            ${sub === "path" ? renderLearningPathContent() : ""}
+            ${sub === "tutor" ? renderAiTutorContent() : ""}
+            ${sub === "pronunciation" ? renderPronunciationContent() : ""}
+            ${sub === "srs" ? renderSrsContent() : ""}
+            ${sub === "culture" ? renderCultureContent() : ""}
+          </div>
+        `;
+      }
+
+      function renderLearningPathContent() {
+        const lang = getActiveLangObj();
+        const prog = state.languageProgress[lang.id] || { level: "A1", completedIds: [] };
+        const completedIds = prog.completedIds || [];
+        const lessons = getLessonsForLanguage(lang.id);
+
+        return `
+          <!-- CEFR Level Architecture Banner -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">${lang.flag} Ruta de ${lang.name} (${state.user.activeLevel})</h2>
+                <div style="font-size:0.8rem; color:var(--text-muted);">
+                  Arquitectura MCER A1–C1 · Planificación de lecciones por nivel
+                </div>
+              </div>
+            </div>
+
+            <div class="sub-tabs" style="margin-bottom:10px;">
+              ${CURRICULUM.cefrLevels.map(lvl => `
+                <button class="sub-tab ${state.user.activeLevel === lvl.code ? 'active' : ''}" onclick="setCefrLevelForActiveLang('${lvl.code}')">
+                  ${lvl.code} (${lang.lessonsPerLevel[lvl.code]} lecc.)
+                </button>
+              `).join("")}
+            </div>
+
+            <div style="font-size:0.82rem; background:var(--surface-alt); padding:10px 12px; border-radius:12px; border:1px solid var(--border);">
+              <strong>Criterio de desbloqueo MCER (${state.user.activeLevel}):</strong>
+              ${(CURRICULUM.cefrLevels.find(c => c.code === state.user.activeLevel) || {}).unlockCriteria}
+            </div>
+          </div>
+
+          <!-- Language-Specific Writing / Phonetics Module -->
+          <div class="card" style="border-left:4px solid var(--primary);">
+            <div class="card-header">
+              <div>
+                <span class="badge-chip chip-blue">Módulo Específico de ${lang.name}</span>
+                <h3 class="card-title" style="margin-top:6px;">${lang.specialModule.title}</h3>
+                <div style="font-size:0.8rem; color:var(--text-muted);">${lang.specialModule.subtitle}</div>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr; gap:8px;">
+              ${lang.specialModule.items.map(it => `
+                <div style="padding:10px 12px; border-radius:12px; background:var(--surface-alt); border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                  <div>
+                    <div style="font-weight:800; color:var(--primary); font-size:0.92rem;">${it.symbol} · <span style="color:var(--text);">${it.example}</span></div>
+                    <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">${it.meaning}</div>
+                  </div>
+                  <button class="btn btn-sm btn-outline" onclick="speakPhrase('${it.example.replace(/'/g, "\\'")}', '${lang.id}', false)">🔊</button>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Vertical Map of Lessons -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">📍 Mapa Vertical de Unidades y Lecciones</h3>
+              <span class="badge-chip chip-green">${completedIds.length}/${lessons.length} completadas</span>
+            </div>
+
+            ${lessons.map((lesson, idx) => {
+              const isDone = completedIds.includes(lesson.id);
+              const prevDone = idx === 0 || completedIds.includes(lessons[idx - 1].id);
+              const isAvailable = !isDone && prevDone;
+              const statusClass = isDone ? "completed" : isAvailable ? "available" : "locked";
+              const badgeLabel = lesson.isMilestoneEvaluation
+                ? "🏅 Evaluación / Prueba de Salida"
+                : isDone ? "✅ Completada" : isAvailable ? "🔓 Disponible ahora" : "🔒 Desbloquea la anterior (o toca para previsualizar)";
+
+              return `
+                <div class="path-node ${statusClass}">
+                  <div class="node-circle">${isDone ? "✓" : idx + 1}</div>
+                  <div style="flex:1;">
+                    <div style="font-size:0.73rem; font-weight:800; color:var(--primary); text-transform:uppercase;">
+                      ${lesson.unitTitle}
+                    </div>
+                    <div style="font-weight:800; font-size:0.98rem; margin:2px 0;">${lesson.title}</div>
+                    <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:6px;">
+                      🎯 ${lesson.objective}
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+                      <span class="badge-chip ${isDone ? 'chip-green' : 'chip-blue'}">${badgeLabel}</span>
+                      <button class="btn btn-sm ${isDone ? 'btn-outline' : 'btn-primary'}" onclick="startLessonById('${lesson.id}')">
+                        ${isDone ? "Repasar" : "Iniciar (" + lesson.durationMin + "m)"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+
+      function renderLessonScreen() {
+        const lesson = state.activeLesson;
+        if (!lesson) {
+          state.screen = "home";
+          return renderHomeScreen();
+        }
+
+        if (state.lessonCompletedSummary) {
+          const sum = state.lessonCompletedSummary;
+          return `
+            <div class="container">
+              <div class="card" style="text-align:center; padding:24px 18px;">
+                <img src="cotorra_mascot_avatar.png" alt="Cotorra celebrando" style="width:84px; height:84px; border-radius:50%; border:3px solid var(--success);" />
+                <h2 style="margin:10px 0 4px; color:var(--success); font-size:1.5rem;">¡Lección Completada, Compa! 🎉</h2>
+                <p style="margin:0 0 16px; color:var(--text-muted); font-weight:600;">${sum.title}</p>
+
+                <div class="stat-grid-2" style="margin-bottom:16px;">
+                  <div style="padding:12px; border-radius:16px; background:var(--primary-soft);">
+                    <div style="font-size:1.3rem; font-weight:900; color:var(--primary);">+${sum.xpEarned} XP</div>
+                    <div style="font-size:0.78rem; color:var(--text-muted);">Experiencia ganada</div>
+                  </div>
+                  <div style="padding:12px; border-radius:16px; background:var(--warning-soft);">
+                    <div style="font-size:1.3rem; font-weight:900; color:#B45309;">+${sum.coinsEarned} 🪙</div>
+                    <div style="font-size:0.78rem; color:var(--text-muted);">Monedas ganadas</div>
+                  </div>
+                </div>
+
+                <div style="padding:12px; border-radius:14px; background:var(--surface-alt); margin-bottom:16px;">
+                  <strong>Precisión del ejercicio: ${sum.accuracy}%</strong>
+                  <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+                    Recuerda: completar lecciones suma práctica real, pero el dominio MCER se consolida con tus repasos espaciados y conversación.
+                  </div>
+                </div>
+
+                ${sum.mistakes.length > 0 ? `
+                  <div style="text-align:left; background:var(--accent-red-soft); padding:12px; border-radius:14px; margin-bottom:16px;">
+                    <div style="font-weight:800; color:var(--accent-red); margin-bottom:6px;">
+                      📌 Errores agregados a tu Repaso Espaciado (SRS):
+                    </div>
+                    ${sum.mistakes.map(m => `
+                      <div style="font-size:0.82rem; margin-bottom:6px;">
+                        • <strong>Respuesta correcta:</strong> ${m.correctAnswer}<br/>
+                        <span style="color:var(--text-muted);">${m.explanationEs}</span>
+                      </div>
+                    `).join("")}
+                  </div>
+                ` : `
+                  <div style="padding:12px; border-radius:14px; background:var(--success-soft); color:var(--success); font-weight:700; margin-bottom:16px;">
+                    ✨ ¡Sin errores! Dominaste todos los ejercicios a la primera.
+                  </div>
+                `}
+
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <button class="btn btn-primary" onclick="state.activeLesson=null; navTo('practice', 'path')">
+                    Continuar en la Ruta de Aprendizaje
+                  </button>
+                  <button class="btn btn-outline" onclick="state.activeLesson=null; navTo('practice', 'tutor')">
+                    Practicar lo aprendido con el Tutor IA
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        const ex = lesson.exercises[state.lessonExIndex];
+        const total = lesson.exercises.length;
+        const progressPct = Math.round(((state.lessonExIndex + 1) / total) * 100);
+
+        return `
+          <div class="container">
+            <div class="card">
+              <!-- Lesson Top Bar -->
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px;">
+                <button class="btn btn-sm btn-outline" onclick="navTo('practice', 'path')">✕ Salir</button>
+                <div style="font-size:0.85rem; font-weight:800;">
+                  Ejercicio ${state.lessonExIndex + 1} de ${total}
+                </div>
+                <div style="font-weight:800; color:var(--accent-red);">❤️ ${state.user.lives}</div>
+              </div>
+
+              <div class="progress-track blue" style="margin-bottom:14px;">
+                <div class="progress-fill blue" style="width:${progressPct}%;"></div>
+              </div>
+
+              <div style="display:flex; gap:6px; align-items:center; margin-bottom:8px;">
+                <span class="badge-chip chip-blue">${ex.competency}</span>
+                <span class="badge-chip chip-gold">${ex.type.replace(/_/g, " ")}</span>
+              </div>
+
+              <h3 style="margin:4px 0 12px; font-size:1.08rem;">${ex.instruction}</h3>
+
+              ${renderExerciseBody(ex)}
+
+              <!-- Feedback Box -->
+              ${state.exerciseChecked ? `
+                <div style="margin-top:16px; padding:14px; border-radius:16px; background:${state.exerciseIsCorrect ? 'var(--success-soft)' : 'var(--accent-red-soft)'}; border:2px solid ${state.exerciseIsCorrect ? 'var(--success)' : 'var(--accent-red)'};">
+                  <div style="font-weight:900; font-size:1rem; color:${state.exerciseIsCorrect ? 'var(--success)' : 'var(--accent-red)'};">
+                    ${state.exerciseIsCorrect ? "✅ ¡Así mismo, compa! Respuesta correcta" : "❌ Casi, compa. Revisa la corrección:"}
+                  </div>
+                  ${!state.exerciseIsCorrect ? `
+                    <div style="font-size:0.9rem; font-weight:800; margin-top:4px;">
+                      Respuesta esperada: «${ex.correctAnswer}»
+                    </div>
+                  ` : ""}
+                  <div style="font-size:0.85rem; margin-top:6px;">
+                    💡 <strong>Explicación:</strong> ${ex.explanationEs}
+                  </div>
+                </div>
+              ` : ""}
+
+              <div style="margin-top:16px;">
+                ${!state.exerciseChecked ? `
+                  <button class="btn btn-primary" onclick="checkCurrentExercise()">
+                    Comprobar respuesta
+                  </button>
+                ` : `
+                  <button class="btn ${state.exerciseIsCorrect ? 'btn-success' : 'btn-primary'}" onclick="nextExerciseOrFinish()">
+                    ${state.lessonExIndex + 1 < total ? "Siguiente ejercicio →" : "Ver resumen de la lección 🎉"}
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderExerciseBody(ex) {
+        if (ex.type === "LISTEN_SELECT" || ex.type === "DICTATION") {
+          return `
+            <div style="display:flex; align-items:center; gap:10px; padding:14px; border-radius:16px; background:var(--primary-soft); margin-bottom:14px;">
+              <button class="btn btn-primary" style="width:54px; height:54px; border-radius:50%; padding:0; flex-shrink:0;" onclick="speakPhrase('${(ex.audioText || "").replace(/'/g, "\\'")}', '${state.user.activeLanguage}', false)">
+                🔊
+              </button>
+              <button class="btn btn-outline btn-sm" onclick="speakPhrase('${(ex.audioText || "").replace(/'/g, "\\'")}', '${state.user.activeLanguage}', true)">
+                🐢 Lento
+              </button>
+              <div style="font-size:0.82rem; color:var(--text-muted);">
+                Toca el altavoz para escuchar el audio nativo${ex.phonetic ? `<br/><code>${ex.phonetic}</code>` : ""}
+              </div>
+            </div>
+            ${ex.type === "LISTEN_SELECT" ? ex.options.map(opt => {
+              const sel = state.selectedOption === opt;
+              const cls = state.exerciseChecked
+                ? (opt === ex.correctAnswer ? "correct" : (sel ? "wrong" : ""))
+                : (sel ? "selected" : "");
+              return `
+                <button class="option-btn ${cls}" onclick="pickOption('${opt.replace(/'/g, "\\'")}')">
+                  <span>${opt}</span>
+                  <span>${sel ? "●" : "○"}</span>
+                </button>
+              `;
+            }).join("") : `
+              <input id="exerciseTextInput" class="input-field" type="text" placeholder="Escribe exactamente lo que escuchas..." value="${state.textAnswerInput.replace(/"/g, '&quot;')}" oninput="updateTextAnswer(this.value)" />
+            `}
+          `;
+        }
+
+        if (ex.type === "MULTIPLE_CHOICE" || ex.type === "FILL_BLANK" || ex.type === "READING_COMPREHENSION") {
+          return `
+            ${ex.passage ? `
+              <div style="padding:14px; border-radius:14px; background:var(--surface-alt); border-left:4px solid var(--primary); font-size:0.9rem; white-space:pre-line; margin-bottom:12px;">${ex.passage}</div>
+            ` : ""}
+            ${ex.prompt ? `
+              <div style="padding:12px; border-radius:12px; background:var(--surface-alt); font-weight:700; white-space:pre-line; margin-bottom:12px;">${ex.prompt}</div>
+            ` : ""}
+            ${ex.options.map(opt => {
+              const sel = state.selectedOption === opt;
+              const cls = state.exerciseChecked
+                ? (opt === ex.correctAnswer ? "correct" : (sel ? "wrong" : ""))
+                : (sel ? "selected" : "");
+              return `
+                <button class="option-btn ${cls}" onclick="pickOption('${opt.replace(/'/g, "\\'")}')">
+                  <span>${opt}</span>
+                  <span>${sel ? "●" : "○"}</span>
+                </button>
+              `;
+            }).join("")}
+          `;
+        }
+
+        if (ex.type === "ORDER_WORDS" || ex.type === "SENTENCE_BUILDER") {
+          const builtWords = state.orderedWordsPicked.map(i => ex.words[i]);
+          return `
+            <div style="padding:12px; border-radius:12px; background:var(--surface-alt); font-weight:700; margin-bottom:12px;">
+              ${ex.prompt}
+            </div>
+            <div style="min-height:60px; padding:12px; border-radius:14px; border:2px dashed var(--primary); background:var(--primary-soft); margin-bottom:12px; display:flex; flex-wrap:wrap; align-items:center;">
+              ${builtWords.length === 0 ? `<span style="color:var(--text-muted); font-size:0.86rem;">Toca las palabras en orden aquí abajo...</span>` : ""}
+              ${state.orderedWordsPicked.map(idx => `
+                <span class="word-chip" onclick="toggleWordBankIdx(${idx})">${ex.words[idx]} ✕</span>
+              `).join("")}
+            </div>
+            <div>
+              ${ex.words.map((w, idx) => {
+                const used = state.orderedWordsPicked.includes(idx);
+                return `<span class="word-chip ${used ? 'used' : ''}" onclick="toggleWordBankIdx(${idx})">${w}</span>`;
+              }).join("")}
+            </div>
+          `;
+        }
+
+        if (ex.type === "MATCH_PAIRS") {
+          return `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div>
+                <div style="font-size:0.78rem; font-weight:800; color:var(--text-muted); margin-bottom:6px;">Idioma meta</div>
+                ${ex.pairs.map(p => {
+                  const key = p.left + ":" + p.right;
+                  const done = state.matchedPairsState.completedKeys.includes(key);
+                  const active = state.matchedPairsState.leftSelected === p.left;
+                  return `
+                    <button class="option-btn ${done ? 'correct' : active ? 'selected' : ''}" ${done ? 'disabled' : ''} onclick="clickMatchItem('left', '${p.left.replace(/'/g, "\\'")}')">
+                      <span>${p.left}</span>
+                    </button>
+                  `;
+                }).join("")}
+              </div>
+              <div>
+                <div style="font-size:0.78rem; font-weight:800; color:var(--text-muted); margin-bottom:6px;">Significado (ES)</div>
+                ${ex.pairs.slice().reverse().map(p => {
+                  const key = p.left + ":" + p.right;
+                  const done = state.matchedPairsState.completedKeys.includes(key);
+                  const active = state.matchedPairsState.rightSelected === p.right;
+                  return `
+                    <button class="option-btn ${done ? 'correct' : active ? 'selected' : ''}" ${done ? 'disabled' : ''} onclick="clickMatchItem('right', '${p.right.replace(/'/g, "\\'")}')">
+                      <span>${p.right}</span>
+                    </button>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+          `;
+        }
+
+        if (ex.type === "CONTEXTUAL_TRANSLATION" || ex.type === "FREE_WRITING") {
+          return `
+            <div style="padding:14px; border-radius:14px; background:var(--surface-alt); font-weight:700; margin-bottom:12px;">
+              ${ex.prompt}
+            </div>
+            <textarea id="exerciseTextInput" class="input-field" rows="3" placeholder="Escribe tu respuesta aquí..." oninput="updateTextAnswer(this.value)">${state.textAnswerInput}</textarea>
+          `;
+        }
+
+        if (ex.type === "ORAL_REPEAT") {
+          return `
+            <div style="padding:14px; border-radius:16px; background:var(--primary-soft); margin-bottom:12px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                <div>
+                  <div style="font-weight:900; font-size:1.05rem; color:var(--primary);">${ex.audioText}</div>
+                  <div style="font-size:0.84rem; color:var(--text-muted); margin-top:2px;">${ex.translationEs || ""}</div>
+                  ${ex.phonetic ? `<div style="font-size:0.78rem; margin-top:4px;"><code>${ex.phonetic}</code></div>` : ""}
+                </div>
+                <div style="display:flex; gap:6px;">
+                  <button class="btn btn-sm btn-primary" onclick="speakPhrase('${ex.audioText.replace(/'/g, "\\'")}', '${state.user.activeLanguage}', false)">🔊 Escuchar</button>
+                  <button class="btn btn-sm btn-outline" onclick="speakPhrase('${ex.audioText.replace(/'/g, "\\'")}', '${state.user.activeLanguage}', true)">🐢</button>
+                </div>
+              </div>
+            </div>
+
+            <img src="cotorra_colonial_scene.png" alt="Escena dominicana" style="width:100%; max-height:165px; object-fit:cover; border-radius:16px; margin-bottom:12px;" />
+
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <button class="btn btn-primary" onclick="triggerOralExerciseMic('${ex.audioText.replace(/'/g, "\\'")}')">
+                🎙️ ${state.pronunciationListening ? "Escuchando tu voz..." : "Grabar y comparar pronunciación"}
+              </button>
+              <button class="btn btn-outline btn-sm" style="width:100%;" onclick="markOralSelfPracticeComplete('${ex.audioText.replace(/'/g, "\\'")}')">
+                Alternativa accesible: Ya la repetí en voz alta / No puedo usar micrófono ahora
+              </button>
+            </div>
+
+            ${state.oralTranscriptResult ? `
+              <div style="margin-top:10px; padding:12px; border-radius:12px; background:var(--surface-alt); border:1px solid var(--border); font-size:0.84rem;">
+                <strong>Resultado oral:</strong> ${state.oralTranscriptResult.message}
+              </div>
+            ` : ""}
+          `;
+        }
+
+        return "";
+      }
+
+      function renderAiTutorContent() {
+        const lang = getActiveLangObj();
+        ensureTutorStarterMessage();
+
+        return `
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">🤖 Tutor Conversacional con IA (Gemini)</h2>
+                <div style="font-size:0.78rem; color:var(--text-muted);">
+                  Practicando ${lang.flag} ${lang.name} · Nivel MCER ${state.user.activeLevel} · Correcciones en español
+                </div>
+              </div>
+              <span class="badge-chip chip-blue">Firebase AI</span>
+            </div>
+
+            <!-- 5 Conversation Modes -->
+            <div class="sub-tabs">
+              ${CURRICULUM.conversationModes.map(m => `
+                <button class="sub-tab ${state.tutorModeId === m.id ? 'active' : ''}" onclick="selectTutorMode('${m.id}')">
+                  ${m.icon} ${m.title}
+                </button>
+              `).join("")}
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-list">
+              ${state.tutorMessages.map(msg => {
+                if (msg.role === "user") {
+                  return `<div class="chat-bubble-user">${msg.text}</div>`;
+                }
+                return `
+                  <div class="chat-bubble-tutor">
+                    <img src="cotorra_mascot_avatar.png" alt="Cotorra" class="brand-avatar" />
+                    <div class="chat-bubble-content">
+                      <div style="font-weight:800; font-size:0.96rem; color:var(--primary); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                        <span>${msg.targetText}</span>
+                        <button class="btn btn-sm btn-outline" style="padding:4px 8px; min-height:30px;" onclick="speakPhrase('${(msg.targetText || "").replace(/'/g, "\\'")}', '${lang.id}', false)">🔊</button>
+                      </div>
+                      <div style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">
+                        🇪🇸 ${msg.translationEs || ""}
+                      </div>
+                      ${msg.correctionEs ? `
+                        <div style="margin-top:8px; padding:8px 10px; border-radius:10px; background:${msg.hasMistake ? 'var(--warning-soft)' : 'var(--success-soft)'}; font-size:0.8rem;">
+                          <strong>📝 Retroalimentación en español:</strong> ${msg.correctionEs}
+                        </div>
+                      ` : ""}
+                      ${msg.naturalAlternative ? `
+                        <div style="margin-top:6px; font-size:0.8rem; color:var(--primary); font-weight:700;">
+                          ✨ Versión natural sugerida: «${msg.naturalAlternative}»
+                        </div>
+                      ` : ""}
+                      ${msg.dominicanTip ? `
+                        <div style="margin-top:6px; font-size:0.78rem; color:var(--text-muted); font-style:italic;">
+                          🦜 ${msg.dominicanTip}
+                        </div>
+                      ` : ""}
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+
+              ${state.tutorLoading ? `
+                <div style="font-size:0.85rem; color:var(--primary); font-weight:700; padding:8px;">
+                  🦜 Cotorra está analizando tu frase con Gemini (Firebase AI Logic)...
+                </div>
+              ` : ""}
+            </div>
+
+            <!-- Input Row -->
+            <div style="display:flex; gap:8px; margin-top:12px;">
+              <input id="tutorInputBox" class="input-field" type="text" placeholder="Escribe tu respuesta en ${lang.name}..." value="${state.tutorInputText.replace(/"/g, '&quot;')}" oninput="state.tutorInputText = this.value" onkeydown="if(event.key==='Enter') sendUserChatToTutor()" />
+              <button class="btn btn-primary" style="width:auto; padding:0 20px;" onclick="sendUserChatToTutor()">
+                Enviar
+              </button>
+            </div>
+          </div>
+
+          <!-- Recurrent Mistakes Tracker -->
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom:8px;">📌 Registro de Errores Recurrentes y Refuerzo</h3>
+            ${state.recurrentMistakesLog.map(item => `
+              <div style="font-size:0.82rem; padding:8px 10px; border-radius:10px; background:var(--surface-alt); margin-bottom:6px;">
+                <strong>[${item.lang.toUpperCase()}]</strong> ${item.note}
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderPronunciationContent() {
+        const lang = getActiveLangObj();
+        const drills = CURRICULUM.pronunciationDrillsByLang[lang.id] || CURRICULUM.pronunciationDrillsByLang.en;
+        const idx = state.pronunciationIndex % drills.length;
+        const drill = drills[idx];
+
+        return `
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">🎙️ Entrenamiento de Pronunciación</h2>
+                <div style="font-size:0.78rem; color:var(--text-muted);">
+                  Audio nativo verificable y captura con permiso explícito de micrófono
+                </div>
+              </div>
+              <span class="badge-chip chip-green">${idx + 1}/${drills.length}</span>
+            </div>
+
+            <div style="padding:16px; border-radius:18px; background:var(--primary-soft); margin-bottom:14px;">
+              <div style="font-size:1.15rem; font-weight:900; color:var(--primary);">${drill.phrase}</div>
+              <div style="font-size:0.88rem; color:var(--text-muted); margin-top:4px;">${drill.translation}</div>
+              <div style="font-size:0.82rem; margin-top:6px;"><code>${drill.phonetic}</code></div>
+              <div style="font-size:0.8rem; color:var(--text); margin-top:8px; padding-top:8px; border-top:1px solid rgba(0,0,0,0.08);">
+                🎯 <strong>Clave fonética:</strong> ${drill.focusTip}
+              </div>
+
+              <div style="display:flex; gap:8px; margin-top:12px;">
+                <button class="btn btn-primary btn-sm" onclick="speakPhrase('${drill.phrase.replace(/'/g, "\\'")}', '${lang.id}', false)">
+                  🔊 Escuchar normal
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="speakPhrase('${drill.phrase.replace(/'/g, "\\'")}', '${lang.id}', true)">
+                  🐢 Escuchar lento (0.7x)
+                </button>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-bottom:10px;" onclick="triggerOralExerciseMic('${drill.phrase.replace(/'/g, "\\'")}')">
+              🎙️ ${state.pronunciationListening ? "Escuchando... Habla ahora" : "Grabar mi pronunciación"}
+            </button>
+
+            <button class="btn btn-outline btn-sm" style="width:100%;" onclick="state.pronunciationIndex += 1; state.pronunciationLastFeedback = null; render();">
+              Siguiente frase de práctica →
+            </button>
+
+            ${state.pronunciationLastFeedback ? `
+              <div style="margin-top:14px; padding:12px; border-radius:14px; background:var(--surface-alt); border:1px solid var(--border);">
+                <div style="font-weight:800; font-size:0.9rem;">Retroalimentación de voz:</div>
+                <div style="font-size:0.84rem; margin-top:4px;">${state.pronunciationLastFeedback.message}</div>
+              </div>
+            ` : ""}
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom:8px;">📜 Historial de Práctica Oral</h3>
+            ${state.pronunciationHistory.map(h => `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:10px; background:var(--surface-alt); margin-bottom:6px; font-size:0.82rem;">
+                <div>
+                  <strong>[${h.lang.toUpperCase()}]</strong> ${h.phrase}
+                </div>
+                <span class="badge-chip chip-green">${h.score ? h.score + "%" : "Practicado"}</span>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderSrsContent() {
+        return `
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">🧠 Repetición Espaciada (SRS)</h2>
+                <div style="font-size:0.78rem; color:var(--text-muted);">
+                  Recuperación activa de vocabulario y errores frecuentes
+                </div>
+              </div>
+              <span class="badge-chip chip-gold">${state.srsDeck.length} tarjetas</span>
+            </div>
+
+            ${state.srsDeck.map(card => `
+              <div style="padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border); margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span class="badge-chip chip-blue">${card.lang.toUpperCase()} · Intervalo: ${card.intervalDays}d</span>
+                  <button class="btn btn-sm btn-outline" onclick="speakPhrase('${card.word.replace(/'/g, "\\'")}', '${card.lang}', false)">🔊</button>
+                </div>
+                <div style="font-size:1.05rem; font-weight:900; margin-top:6px;">${card.word}</div>
+                <div style="font-size:0.88rem; color:var(--primary); font-weight:700;">${card.translation}</div>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin:4px 0 10px;">${card.context}</div>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn btn-sm btn-success" style="flex:1;" onclick="gradeSrsCard('${card.id}', true)">
+                    ✅ La recordé bien
+                  </button>
+                  <button class="btn btn-sm btn-outline" style="flex:1;" onclick="gradeSrsCard('${card.id}', false)">
+                    🔄 Repasar pronto
+                  </button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderCultureContent() {
+        return `
+          <div class="card">
+            <img src="cotorra_colonial_scene.png" alt="República Dominicana" style="width:100%; height:150px; object-fit:cover; border-radius:16px; margin-bottom:12px;" />
+            <span class="badge-chip chip-red">🇩🇴 Identidad y Cultura</span>
+            <h2 class="card-title" style="margin-top:6px;">La República Dominicana: ¡Más que un país, una vibra!</h2>
+            <p style="font-size:0.84rem; color:var(--text-muted);">
+              En Cotorra celebramos el español dominicano en la personalidad de tu tutor. Aquí aprendes qué significan nuestras expresiones, en qué contexto son apropiadas y cómo expresar la misma idea en un registro formal internacional, <strong>sin confundirlas con traducciones literales del idioma que estudias</strong>.
+            </p>
+
+            ${CURRICULUM.dominicanCultureNotes.map(note => `
+              <div style="padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border); margin-bottom:10px;">
+                <div style="font-weight:900; font-size:1rem; color:var(--primary);">🦜 «${note.expression}»</div>
+                <div style="font-size:0.84rem; margin-top:4px;"><strong>Significado:</strong> ${note.meaning}</div>
+                <div style="font-size:0.82rem; margin-top:4px;"><strong>Cuándo se usa:</strong> ${note.whenToUse}</div>
+                <div style="font-size:0.82rem; margin-top:4px;"><strong>Contexto apropiado:</strong> ${note.contextAppropriate}</div>
+                <div style="font-size:0.82rem; margin-top:4px; color:var(--success); font-weight:700;">
+                  🎓 Registro formal equivalente: ${note.formalEquivalent}
+                </div>
+                <div style="font-size:0.8rem; margin-top:4px; color:var(--text-muted);">
+                  🌍 <em>Conexión con tu idioma meta:</em> ${note.targetLangNote}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderProgressScreen() {
+        const lang = getActiveLangObj();
+        const prog = state.languageProgress[lang.id] || { level: "A1", completedCount: 2, minutes: 145, listening: 74, reading: 82, speaking: 68, writing: 72 };
+        const hours = Math.floor(state.user.totalMinutes / 60);
+        const mins = state.user.totalMinutes % 60;
+
+        return `
+          <div class="container">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">📊 Tu Progreso y Dominio Estimado</h2>
+                <span class="badge-chip chip-gold">🔥 ${state.user.streak} días</span>
+              </div>
+
+              <div class="stat-grid-2" style="margin-bottom:14px;">
+                <div style="padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border);">
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Palabras aprendidas</div>
+                  <div style="font-size:1.45rem; font-weight:900; color:var(--success);">${state.user.wordsLearnedCount}</div>
+                  <div style="font-size:0.74rem; color:var(--text-muted);">${state.srsDeck.length} en cola de repaso</div>
+                </div>
+                <div style="padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border);">
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Lecciones completas</div>
+                  <div style="font-size:1.45rem; font-weight:900; color:var(--primary);">${state.user.completedLessonsCount}</div>
+                  <div style="font-size:0.74rem; color:var(--text-muted);">Mejor racha: ${state.user.bestStreak} días</div>
+                </div>
+                <div style="padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border);">
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Tiempo total de estudio</div>
+                  <div style="font-size:1.45rem; font-weight:900;">${hours}h ${mins}m</div>
+                  <div style="font-size:0.74rem; color:var(--text-muted);">Meta diaria: ${state.user.dailyMinutes} min</div>
+                </div>
+                <div style="padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border);">
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Nivel estimado (${lang.name})</div>
+                  <div style="font-size:1.45rem; font-weight:900; color:#B45309;">${prog.level}</div>
+                  <div style="font-size:0.74rem; color:var(--text-muted);">Marco de referencia MCER</div>
+                </div>
+              </div>
+
+              <div style="padding:10px 12px; border-radius:12px; background:var(--warning-soft); font-size:0.78rem; color:#92400E;">
+                ⚖️ <strong>Nota pedagógica MCER:</strong> Los puntos, rachas y lecciones reflejan tu constancia de estudio, pero no equivalen automáticamente a un certificado oficial de dominio.
+              </div>
+            </div>
+
+            <!-- 4 Competencies Breakdown -->
+            <div class="card">
+              <h3 class="card-title" style="margin-bottom:10px;">🎯 Dominio Estimado por Competencia (${lang.flag} ${lang.name})</h3>
+              ${[
+                { label: "🎧 Comprensión auditiva", score: prog.listening || 72 },
+                { label: "📖 Comprensión lectora", score: prog.reading || 80 },
+                { label: "🗣️ Expresión oral", score: prog.speaking || 66 },
+                { label: "✍️ Expresión escrita", score: prog.writing || 70 }
+              ].map(c => `
+                <div style="margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.84rem; font-weight:700;">
+                    <span>${c.label}</span>
+                    <span>${c.score}%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill blue" style="width:${c.score}%;"></div>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+
+            <!-- Badges & Challenges -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">🏅 Insignias y Desafíos Verificables</h3>
+                <span class="badge-chip chip-green">${state.unlockedBadgeIds.length}/${CURRICULUM.badges.length}</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr; gap:8px;">
+                ${CURRICULUM.badges.map(b => {
+                  const unlocked = state.unlockedBadgeIds.includes(b.id);
+                  return `
+                    <div style="display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:14px; background:var(--surface-alt); border:1px solid ${unlocked ? 'var(--success)' : 'var(--border)'}; opacity:${unlocked ? '1' : '0.6'};">
+                      <div style="font-size:1.6rem;">${b.icon}</div>
+                      <div style="flex:1;">
+                        <div style="font-weight:800; font-size:0.9rem;">${b.title}</div>
+                        <div style="font-size:0.78rem; color:var(--text-muted);">${b.description}</div>
+                      </div>
+                      <span class="badge-chip ${unlocked ? 'chip-green' : 'chip-blue'}">${unlocked ? "Desbloqueada" : b.requirementText}</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderStoreScreen() {
+        const categories = ["Todo", "Avatares", "Temas", "Vidas", "Cultura", "Accesorios"];
+        const items = CURRICULUM.storeItems.filter(i =>
+          state.storeSubTab === "Todo" || i.category === state.storeSubTab
+        );
+
+        return `
+          <div class="container">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">🛍️ Tienda Cotorra</h2>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">
+                    Canjea las monedas ganadas estudiando (sin compras con dinero real)
+                  </div>
+                </div>
+                <span class="badge-chip chip-gold">🪙 ${state.user.coins}</span>
+              </div>
+
+              <div class="sub-tabs">
+                ${categories.map(cat => `
+                  <button class="sub-tab ${state.storeSubTab === cat ? 'active' : ''}" onclick="state.storeSubTab='${cat}'; render();">
+                    ${cat}
+                  </button>
+                `).join("")}
+              </div>
+
+              ${items.map(item => {
+                const owned = !item.consumable && state.ownedStoreIds.includes(item.id);
+                return `
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-radius:16px; background:var(--surface-alt); border:1px solid var(--border); margin-bottom:10px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                      <div style="font-size:1.85rem;">${item.icon}</div>
+                      <div>
+                        <div style="font-weight:800; font-size:0.95rem;">${item.title}</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">${item.subtitle}</div>
+                        <div style="font-size:0.8rem; font-weight:800; color:#B45309; margin-top:4px;">
+                          ${item.price === 0 ? "Incluido" : "🪙 " + item.price + " monedas"}
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm ${owned ? 'btn-outline' : 'btn-primary'}" onclick="buyStoreItem('${item.id}')">
+                      ${owned ? "Adquirido" : "Canjear"}
+                    </button>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderProfileScreen() {
+        const dist = state.user.sessionDistribution;
+        return `
+          <div class="container">
+            <div class="card" style="text-align:center;">
+              <img src="cotorra_mascot_avatar.png" alt="Avatar Cotorra" style="width:82px; height:82px; border-radius:50%; border:3px solid var(--primary);" />
+              <h2 style="margin:8px 0 2px;">${state.user.name} 🇩🇴</h2>
+              <div style="font-size:0.84rem; color:var(--text-muted); margin-bottom:12px;">
+                Nivel ${state.user.activeLevel} · ${state.isAuthenticated ? (state.user.email || "Cuenta sincronizada con Google") : "Modo Local Persistente"}
+              </div>
+              <div style="display:flex; gap:8px; justify-content:center;">
+                <button class="btn btn-sm btn-primary" onclick="navTo('auth')">
+                  ${state.isAuthenticated ? "🔐 Gestionar Cuenta Google" : "🔵 Sincronizar con Google"}
+                </button>
+                <button class="btn btn-sm btn-outline" onclick="navTo('store')">
+                  🛍️ Ir a la Tienda
+                </button>
+              </div>
+            </div>
+
+            <!-- Customize 25-Min Session Distribution -->
+            <div class="card">
+              <h3 class="card-title" style="margin-bottom:6px;">⏱️ Distribución de tu Sesión Diaria (${state.user.dailyMinutes} min)</h3>
+              <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0;">
+                Ajusta los minutos de cada bloque según tus necesidades sin perder tu hábito diario:
+              </p>
+              ${[
+                { key: "srs", label: "Repaso espaciado (SRS)" },
+                { key: "newContent", label: "Contenido nuevo (Lecciones)" },
+                { key: "listeningOral", label: "Comprensión auditiva y pronunciación" },
+                { key: "aiConversation", label: "Conversación interactiva con IA" },
+                { key: "writingEval", label: "Escritura y evaluación" }
+              ].map(b => `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:0.85rem;">
+                  <span>${b.label}</span>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <input type="number" min="1" max="20" value="${dist[b.key]}" style="width:58px; padding:6px; border-radius:8px; border:1px solid var(--border); text-align:center; font-weight:800;" onchange="updateDistributionBlock('${b.key}', this.value)" />
+                    <span>min</span>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+
+            <!-- App Preferences & Data Privacy -->
+            <div class="card">
+              <h3 class="card-title" style="margin-bottom:10px;">⚙️ Ajustes, Accesibilidad y Privacidad</h3>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
+                <div>
+                  <div style="font-weight:700;">🌙 Tema Oscuro</div>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Alterna entre modo claro luminoso y modo oscuro nocturno</div>
+                </div>
+                <button class="btn btn-sm btn-outline" onclick="toggleDarkTheme()">
+                  ${state.user.darkMode ? "Activado" : "Desactivado"}
+                </button>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
+                <div>
+                  <div style="font-weight:700;">📳 Sonido y Vibración Háptica</div>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">Respuesta al acertar o corregir ejercicios</div>
+                </div>
+                <button class="btn btn-sm btn-outline" onclick="state.user.vibrationEnabled = !state.user.vibrationEnabled; persistState(); render();">
+                  ${state.user.vibrationEnabled ? "Activo" : "Silenciado"}
+                </button>
+              </div>
+
+              <div style="display:flex; gap:10px; margin-top:14px;">
+                <button class="btn btn-sm btn-outline" style="flex:1;" onclick="exportUserDataJson()">
+                  📤 Exportar mis datos (JSON)
+                </button>
+                <button class="btn btn-sm btn-danger" style="flex:1;" onclick="resetAllUserData()">
+                  🗑️ Eliminar progreso local
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderBottomNav() {
+        if (state.screen === "welcome" || state.screen === "lesson") return "";
+        const s = state.screen;
+        return `
+          <nav class="bottom-nav">
+            <button class="nav-item ${s === 'home' ? 'active' : ''}" onclick="navTo('home')">
+              <span class="nav-icon">🏠</span>
+              <span>Inicio</span>
+            </button>
+            <button class="nav-item ${s === 'practice' ? 'active' : ''}" onclick="navTo('practice', 'path')">
+              <span class="nav-icon">📖</span>
+              <span>Practicar</span>
+            </button>
+            <button class="nav-item ${s === 'progress' ? 'active' : ''}" onclick="navTo('progress')">
+              <span class="nav-icon">📊</span>
+              <span>Progreso</span>
+            </button>
+            <button class="nav-item ${s === 'store' ? 'active' : ''}" onclick="navTo('store')">
+              <span class="nav-icon">🛍️</span>
+              <span>Tienda</span>
+            </button>
+            <button class="nav-item ${s === 'profile' ? 'active' : ''}" onclick="navTo('profile')">
+              <span class="nav-icon">👤</span>
+              <span>Perfil</span>
+            </button>
+          </nav>
+        `;
+      }
+
+      function render() {
+        const root = document.getElementById("app");
+        if (!root) return;
+
+        let bodyHtml = "";
+        if (state.screen === "welcome") bodyHtml = renderWelcomeScreen();
+        else if (state.screen === "auth") bodyHtml = renderAuthScreen();
+        else if (state.screen === "onboarding") bodyHtml = renderOnboardingScreen();
+        else if (state.screen === "home") bodyHtml = renderHomeScreen();
+        else if (state.screen === "practice") bodyHtml = renderPracticeHubScreen();
+        else if (state.screen === "lesson") bodyHtml = renderLessonScreen();
+        else if (state.screen === "progress") bodyHtml = renderProgressScreen();
+        else if (state.screen === "store") bodyHtml = renderStoreScreen();
+        else if (state.screen === "profile") bodyHtml = renderProfileScreen();
+        else bodyHtml = renderHomeScreen();
+
+        root.innerHTML = `
+          ${state.toastMessage ? `<div class="ToastBanner">${state.toastMessage}</div>` : ""}
+          ${renderTopHeader()}
+          <main>${bodyHtml}</main>
+          ${renderBottomNav()}
+        `;
+      }
+
+      initFromNative();
+      render();
+    })();
+  </script>
+</body>
+</html>
